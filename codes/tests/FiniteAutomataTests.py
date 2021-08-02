@@ -33,5 +33,73 @@ class FiniteAutomataTests(unittest.TestCase):
             final_states = final_states
         )
 
-        fa.determinization()
+
+        actual = fa.determinization()
+        self.assertEqual(actual[a], [a, b, c])
+        self.assertEqual(actual[b], [b, c])
+        self.assertEqual(actual[c], [c])
+
+        p = State("p")
+        q = State("q")
+        r = State("r")
+
+        symbols = ['a', 'b', 'c', '&']
+        transitions = [
+            Transition(p, '&', p),
+            Transition(p, '&', q),
+            Transition(p, 'b', q),
+            Transition(p, 'c', r),
+            Transition(q, 'a', p),
+            Transition(q, 'b', r),
+            Transition(q, 'c', p),
+            Transition(q, 'c', q),
+        ]
+
+        initial_state = p
+        final_states= [r]
+
+        fa = FiniteAutomata(
+            states = [p,q,r],
+            symbols = symbols,
+            transitions = transitions,
+            initial_state = initial_state,
+            final_states = final_states
+        )
+        actual = fa.determinization()
+        self.assertEqual(actual[p], [p,q])
+        self.assertEqual(actual[q], [q])
+        self.assertEqual(actual[r], [r])
+
+        q0 = State("q0")
+        q1 = State("q1")
+        q2 = State("q2")
+        q3 = State("q3")
+
+        symbols = ['a', 'b', '&']
+        transitions = [
+            Transition(q0, 'a', q1),
+            Transition(q0, '&', q1),
+            Transition(q1, 'a', q2),
+            Transition(q1, 'b', q2),
+            Transition(q1, '&', q2),
+            Transition(q2, 'b', q3),
+            Transition(q3, 'a', q1),
+            Transition(q3, 'b', q0),
+        ]
+
+        initial_state = q0
+        final_states= [q2]
+
+        fa = FiniteAutomata(
+            states = [q0,q1,q2,q3],
+            symbols = symbols,
+            transitions = transitions,
+            initial_state = initial_state,
+            final_states = final_states
+        )
+        actual = fa.determinization()
+        self.assertEqual(actual[q0], [q0,q1,q2])
+        self.assertEqual(actual[q1], [q1,q2])
+        self.assertEqual(actual[q2], [q2])
+        self.assertEqual(actual[q3], [q3])
         return None

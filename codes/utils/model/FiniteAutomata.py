@@ -32,11 +32,11 @@ class FiniteAutomata:
     def get_final_states(self) -> List[State]:
         return self._final_states
 
-    def determinization(self) -> None:
-        if not self._symbols.count("&"):
-            return None
-
+    def determinization(self) -> Dict[State, List[State]]:
         e_closure: Dict[State, List[State]] = {state: [state] for state in self._states}
+
+        if not self._symbols.count("&"):
+            return e_closure
 
         for state, values in e_closure.items():
             stack: List[State] = copy(values)
@@ -51,7 +51,7 @@ class FiniteAutomata:
                             e_closure[state].append(destiny_state)
                             stack.append(destiny_state)
 
-        print(e_closure)
+        return e_closure
 
 
 
