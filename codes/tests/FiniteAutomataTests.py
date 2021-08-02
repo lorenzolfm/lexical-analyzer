@@ -1,8 +1,8 @@
 import unittest
 
-from utils.model.State import State
-from utils.model.Transition import Transition
-from utils.model.FiniteAutomata import FiniteAutomata
+from ..utils.model.State import State
+from ..utils.model.Transition import Transition
+from ..utils.model.FiniteAutomata import FiniteAutomata
 
 class FiniteAutomataTests(unittest.TestCase):
     def test_determinization(self) -> None:
@@ -15,7 +15,7 @@ class FiniteAutomataTests(unittest.TestCase):
             Transition(a, '0', b),
             Transition(a, '0', c),
             Transition(a, '1', a),
-            Transition(a, '&', a),
+            Transition(a, '&', b),
             Transition(b, '&', c),
             Transition(b, '1', b),
             Transition(c, '0', c),

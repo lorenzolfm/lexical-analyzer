@@ -15,3 +15,6 @@ class Transition:
 
     def get_destiny_state(self) -> State:
         return self._destiny_state
+
+    def __repr__(self) -> str:
+        return f"{self._origin_state, self._symbol, self._destiny_state}"

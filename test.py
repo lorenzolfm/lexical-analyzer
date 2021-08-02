@@ -1,6 +1,6 @@
 import unittest
 
-from tests.FiniteAutomataTests import FiniteAutomataTests
+from codes.tests.FiniteAutomataTests import FiniteAutomataTests # noqa
 
 if __name__ == '__main__':
     unittest.main()
