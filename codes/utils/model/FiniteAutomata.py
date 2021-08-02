@@ -1,4 +1,4 @@
-from typing import Set, Dict, List
+from typing import Set, Dict, List, Optional
 from copy import copy
 
 from .Transition import Transition
@@ -37,7 +37,30 @@ class FiniteAutomata:
         if ("&" not in self._symbols):
             return None
 
-        e_closure: Dict[State, Set[State]] = {state: [state] for state in self._states}
+        e_closure = self._get_e_closure()
+        new_initial_state = e_closure[self._initial_state]
+        new_states: Set[Set[State]] = set(e_closure.values())
+        new_final_states = self._get_new_final_states(new_states)
+        self._symbols.remove("&")
+
+        return None
+
+    def _get_new_transitions(self, list_of_new_states: Set[Set[State]]) -> Set[Transition]:
+        new_transitions: Set[Transition] = set()
+
+        return self._transitions
+
+    def _get_new_final_states(self, list_of_new_states: Set[Set[State]]) -> Set[Set[State]]:
+        new_final_states: Set[Set[State]] = set()
+        for new_states in list_of_new_states:
+            for state in new_states:
+                if state in self._final_states:
+                    new_final_states.add(new_states)
+
+        return new_final_states
+
+    def _get_e_closure(self) -> Dict[State, Set[State]]:
+        e_closure: Dict[State, Set[State]] = {state: {state} for state in self._states}
 
         for state, values in e_closure.items():
             stack: List[State] = list(copy(values))
@@ -51,3 +74,12 @@ class FiniteAutomata:
                         if (destiny_state not in e_closure[state]):
                             e_closure[state].add(destiny_state)
                             stack.append(destiny_state)
+
+        return e_closure
+
+    def _get_transition(self, origin, symbol) -> Optional[Transition]:
+        for transition in self._transitions:
+            if origin == transition.get_origin_state() and symbol == transition.get_symbol():
+                return transition
+
+        return None
