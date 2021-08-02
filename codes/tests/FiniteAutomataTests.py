@@ -34,7 +34,7 @@ class FiniteAutomataTests(unittest.TestCase):
         )
 
 
-        actual = fa.determinization()
+        actual = fa._get_e_closure()
         self.assertEqual(actual[a], {a, b, c})
         self.assertEqual(actual[b], {b, c})
         self.assertEqual(actual[c], {c})
@@ -65,7 +65,7 @@ class FiniteAutomataTests(unittest.TestCase):
             initial_state = initial_state,
             final_states = final_states
         )
-        actual = fa.determinization()
+        actual = fa._get_e_closure()
         self.assertEqual(actual[p], {p,q})
         self.assertEqual(actual[q], {q})
         self.assertEqual(actual[r], {r})
@@ -97,7 +97,7 @@ class FiniteAutomataTests(unittest.TestCase):
             initial_state = initial_state,
             final_states = final_states
         )
-        actual = fa.determinization()
+        actual = fa._get_e_closure()
         self.assertEqual(actual[q0], {q0,q1,q2})
         self.assertEqual(actual[q1], {q1,q2})
         self.assertEqual(actual[q2], {q2})
