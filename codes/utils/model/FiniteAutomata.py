@@ -1,4 +1,4 @@
-from typing import List, Dict
+from typing import Set, Dict, List
 from copy import copy
 
 from .Transition import Transition
@@ -7,40 +7,40 @@ from .State import State
 
 class FiniteAutomata:
     def __init__(self,
-                 states: List[State],
-                 symbols: List[str],
-                 transitions: List[Transition],
+                 states: Set[State],
+                 symbols: Set[str],
+                 transitions: Set[Transition],
                  initial_state: State,
-                 final_states: List[State]):
+                 final_states: Set[State]):
         self._states = states
         self._symbols = symbols
         self._transitions = transitions
         self._initial_state = initial_state
         self._final_states = final_states
 
-    def get_states(self) -> List[State]:
+    def get_states(self) -> Set[State]:
         return self._states
 
-    def get_symbols(self) -> List[str]:
+    def get_symbols(self) -> Set[str]:
         return self._symbols
 
     def get_initial_state(self) -> State:
         return self._initial_state
 
-    def get_transitions(self) -> List[Transition]:
+    def get_transitions(self) -> Set[Transition]:
         return self._transitions
 
-    def get_final_states(self) -> List[State]:
+    def get_final_states(self) -> Set[State]:
         return self._final_states
 
-    def determinization(self) -> Dict[State, List[State]]:
-        e_closure: Dict[State, List[State]] = {state: [state] for state in self._states}
+    def determinization(self) -> Dict[State, Set[State]]:
+        e_closure: Dict[State, Set[State]] = {state: {state} for state in self._states}
 
-        if not self._symbols.count("&"):
+        if ("&" not in self._symbols):
             return e_closure
 
         for state, values in e_closure.items():
-            stack: List[State] = copy(values)
+            stack: List[State] = list(copy(values))
 
             while len(stack):
                 actual_state = stack.pop()
@@ -48,13 +48,7 @@ class FiniteAutomata:
                 for transition in self._transitions:
                     if actual_state == transition.get_origin_state() and transition.get_symbol() == "&":
                         destiny_state = transition.get_destiny_state()
-                        if not e_closure[state].count(destiny_state):
-                            e_closure[state].append(destiny_state)
+                        if (destiny_state not in e_closure[state]):
+                            e_closure[state].add(destiny_state)
                             stack.append(destiny_state)
-
         return e_closure
-
-
-
-
-
