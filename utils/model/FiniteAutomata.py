@@ -1,14 +1,13 @@
 from typing import List, Dict
 from copy import copy
 
-from Transition import Transition
-from State import State
-
+from .Transition import Transition
+from .State import State
 
 class FiniteAutomata:
     def __init__(self,
                  states: List[State],
-                 symbols: List[chr],
+                 symbols: List[str],
                  transitions: List[Transition],
                  initial_state: State,
                  final_states: List[State]):
@@ -21,7 +20,7 @@ class FiniteAutomata:
     def get_states(self) -> List[State]:
         return self._states
 
-    def get_symbols(self) -> List[chr]:
+    def get_symbols(self) -> List[str]:
         return self._symbols
 
     def get_initial_state(self) -> State:
@@ -39,7 +38,7 @@ class FiniteAutomata:
 
         e_closure: Dict[State, List[State]] = {state: [state] for state in self._states}
 
-        for state, values in e_closure:
+        for state, values in e_closure.items():
             stack: List[State] = copy(values)
 
             while len(stack):
@@ -51,6 +50,8 @@ class FiniteAutomata:
                         if not e_closure[state].count(destiny_state):
                             e_closure[state].append(destiny_state)
                             stack.append(destiny_state)
+
+        print(e_closure)
 
 
 

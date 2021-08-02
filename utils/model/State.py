@@ -8,3 +8,6 @@ class State:
 
     def get_label(self) -> str:
         return self._label
+
+    def __repr__(self) -> str:
+        return self.get_name()

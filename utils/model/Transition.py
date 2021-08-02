@@ -1,8 +1,8 @@
-from State import State
+from .State import State
 
 
 class Transition:
-    def __init__(self, origin_state: State, symbol: chr, destiny_state: State):
+    def __init__(self, origin_state: State, symbol: str, destiny_state: State):
         self._origin_state = origin_state
         self._symbol = symbol
         self._destiny_state = destiny_state
@@ -10,7 +10,7 @@ class Transition:
     def get_origin_state(self) -> State:
         return self._origin_state
 
-    def get_symbol(self) -> chr:
+    def get_symbol(self) -> str:
         return self._symbol
 
     def get_destiny_state(self) -> State:
