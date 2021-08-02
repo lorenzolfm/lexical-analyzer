@@ -33,6 +33,24 @@ class FiniteAutomata:
     def get_final_states(self) -> Set[State]:
         return self._final_states
 
+    def __repr__(self):
+        """
+        estados | a | b |
+        -----------------
+            A   | B | A |
+            B   | B | B |
+        """
+
+        string = ""
+        for state in self._states:
+            string += f"|{state.get_name()}"
+            for symbol in self._symbols:
+                for transition in self._transitions:
+                    if state == transition.get_origin_state() and symbol == transition.get_symbol():
+                        string += f"|{transition.get_destiny_state()}|"
+            string += "\n"
+        return string
+
     def determinization(self) -> Dict[State, Set[State]]:
         e_closure: Dict[State, Set[State]] = {state: {state} for state in self._states}
 
