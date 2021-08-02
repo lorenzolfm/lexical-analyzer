@@ -1,4 +1,5 @@
-from typing import List
+from typing import List, Dict
+from copy import copy
 
 from Transition import Transition
 from State import State
@@ -31,3 +32,27 @@ class FiniteAutomata:
 
     def get_final_states(self) -> List[State]:
         return self._final_states
+
+    def determinization(self) -> None:
+        if not self._symbols.count("&"):
+            return None
+
+        e_closure: Dict[State, List[State]] = {state: [state] for state in self._states}
+
+        for state, values in e_closure:
+            stack: List[State] = copy(values)
+
+            while len(stack):
+                actual_state = stack.pop()
+
+                for transition in self._transitions:
+                    if actual_state == transition.get_origin_state() and transition.get_symbol() == "&":
+                        destiny_state = transition.get_destiny_state()
+                        if not e_closure[state].count(destiny_state):
+                            e_closure[state].append(destiny_state)
+                            stack.append(destiny_state)
+
+
+
+
+
