@@ -4,6 +4,7 @@ from copy import copy
 from .Transition import Transition
 from .State import State
 
+
 class FiniteAutomata:
     def __init__(self,
                  states: List[State],

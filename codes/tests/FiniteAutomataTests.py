@@ -23,7 +23,7 @@ class FiniteAutomataTests(unittest.TestCase):
         ]
 
         initial_state = a
-        final_states= [c]
+        final_states = [c]
 
         fa = FiniteAutomata(
             states = [a,b,c],
