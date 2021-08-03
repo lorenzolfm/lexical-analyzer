@@ -65,6 +65,7 @@ class FiniteAutomata:
 
         e_closure = self._get_e_closure()
         new_initial_state = e_closure[self._initial_state]
+        # FIXME: Unhashable type: set
         new_states: Set[Set[State]] = set(e_closure.values())
         new_final_states = self._get_new_final_states(new_states)
         self._symbols.remove("&")
