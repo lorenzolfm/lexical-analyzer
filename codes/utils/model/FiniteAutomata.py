@@ -40,8 +40,6 @@ class FiniteAutomata:
             A   | B | A |
             B   | B | B |
         """
-        states = [state.get_name() for state in self._states]
-        states = sorted(states)
 
         string = " |"
         for symbol in sorted(self._symbols):
@@ -65,7 +63,9 @@ class FiniteAutomata:
             return None
 
         e_closure = self._get_e_closure()
+
         # new_initial_state = e_closure[self._initial_state]
+        # FIXME: Unhashable type: set
         new_states: Set[Set[State]] = set(e_closure.values())
         new_final_states = self._get_new_final_states(new_states)
         self._symbols.remove("&")
