@@ -68,6 +68,10 @@ class FiniteAutomata:
         new_states: Set[Set[State]] = set(e_closure.values())
         new_final_states = self._get_new_final_states(new_states)
         self._symbols.remove("&")
+        new_transitions = self._get_new_transitions(new_states, e_closure)
+        conversion_states = self._simplify_states(new_transitions)
+        # TODO: converter estados de acordo com o dicionário de conversão
+        # conversion_states: Dict[estado_antigo (de acordo com new_states), nome do novo estado]
 
         return None
 
@@ -95,13 +99,15 @@ class FiniteAutomata:
         return new_transitions
 
     @staticmethod
-    def _simplify_states(set_of_new_transitions):
+    def _simplify_states(set_of_new_transitions) -> Dict[Set[State], str]:
         state: int = 65
         conversion: Dict[Set[State], str] = {}
         for transition in set_of_new_transitions:
             new_state = transition[0]
             conversion[new_state] = chr(state)
             state += 1
+
+        return conversion
 
     def _get_new_final_states(self, list_of_new_states: Set[Set[State]]) -> Set[Set[State]]:
         new_final_states: Set[Set[State]] = set()
