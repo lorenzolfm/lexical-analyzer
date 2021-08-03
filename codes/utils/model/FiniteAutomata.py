@@ -12,11 +12,11 @@ class FiniteAutomata:
                  transitions: Set[Transition],
                  initial_state: State,
                  final_states: Set[State]):
-        self._states = states
-        self._symbols = symbols
-        self._transitions = transitions
-        self._initial_state = initial_state
-        self._final_states = final_states
+        self._states: Set[State] = states
+        self._symbols: Set[str] = symbols
+        self._transitions: Set[Transition] = transitions
+        self._initial_state: State = initial_state
+        self._final_states: Set[State] = final_states
 
     def get_states(self) -> Set[State]:
         return self._states
@@ -59,22 +59,40 @@ class FiniteAutomata:
             string += "\n"
         return string
 
+    # TODO: organizar melhor o código.
     def determinization(self) -> None:
         if ("&" not in self._symbols):
             return None
 
         e_closure = self._get_e_closure()
-        new_initial_state = e_closure[self._initial_state]
+        # new_initial_state = e_closure[self._initial_state]
         new_states: Set[Set[State]] = set(e_closure.values())
         new_final_states = self._get_new_final_states(new_states)
         self._symbols.remove("&")
         new_transitions = self._get_new_transitions(new_states, e_closure)
-        conversion_states = self._simplify_states(new_transitions)
+        conversion_states: Dict[Set[State], State] = self._simplify_states(new_transitions)
         # TODO: converter estados de acordo com o dicionário de conversão
-        # conversion_states: Dict[estado_antigo (de acordo com new_states), nome do novo estado]
+        # conversion_states: Dict[estado_antigo (de acordo com new_states), novo estado]
         transitions: Set[Transition] = set()
+        final_states: Set[State] = set()
         for old_state, new_state in conversion_states:
-            pass
+            for state in new_final_states:
+                final_states.add(conversion_states[state])
+
+            for transition in new_transitions:
+                if transition[0] == old_state:
+                    transition[0] = new_state
+
+                if transition[2] == old_state:
+                    transition[2] = new_state
+
+        for transition in new_transitions:
+            transitions.add(Transition(transition[0], transition[1], transition[2]))
+
+        self._transitions = transitions
+        self._final_states = final_states
+        self._states: Set[State] = set(conversion_states.values())
+        self._initial_state: State = conversion_states[e_closure[self._initial_state]]
 
         return None
 
@@ -82,8 +100,8 @@ class FiniteAutomata:
     # A saída deve conter todas as transições deterministicas
     # de um AF após ele ter sido determinizado.
     # NÃO USAR TESTE COM MAIS DE UMA TRANSIÇÃO PELO MESMO SÍMBOLO. SOMENTE COM &-TRANSIÇÃO.
-    def _get_new_transitions(self, list_of_new_states: Set[Set[State]], e_closure):
-        new_transitions: set = set()
+    def _get_new_transitions(self, list_of_new_states: Set[Set[State]], e_closure) -> Set[List]:
+        new_transitions: Set[List] = set()
         stack = list(list_of_new_states)
         while stack:
             new_states = stack.pop()
@@ -97,7 +115,7 @@ class FiniteAutomata:
                     if (aux_e_closure not in list_of_new_states):
                         stack.append(aux_e_closure)
 
-                new_transitions.add((new_states, symbol, result_state))
+                new_transitions.add([new_states, symbol, result_state])
 
         return new_transitions
 
