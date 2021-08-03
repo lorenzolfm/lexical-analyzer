@@ -105,18 +105,20 @@ class FiniteAutomata:
         stack = list(list_of_new_states)
         while stack:
             new_states = stack.pop()
-            result_state: Set[State] = set()
             for symbol in self._symbols:
+                result_state: Set[State] = set()
                 for state in new_states:
                     transition = self._get_transition(state, symbol)
                     if transition:
                         aux_state: State = transition.get_destiny_state()
                         aux_e_closure = e_closure[aux_state]
                         result_state |= aux_e_closure
-                        if (aux_e_closure not in list_of_new_states):
-                            stack.append(aux_e_closure)
 
-                new_transitions.append([new_states, symbol, result_state])
+                if result_state:
+                    new_transitions.append([new_states, symbol, result_state])
+                    if (result_state not in list_of_new_states):
+                        stack.append(result_state)
+                        list_of_new_states.append(result_state)
 
         return new_transitions
 
