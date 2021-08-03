@@ -65,17 +65,21 @@ class FiniteAutomata:
         e_closure = self._get_e_closure()
 
         new_states: List[Set[State]] = list(e_closure.values())
-        new_final_states = self._get_new_final_states(new_states)
         self._symbols.remove("&")
         new_transitions = self._get_new_transitions(new_states, e_closure)
-        conversion_states: Dict[Set[State], State] = self._simplify_states(new_transitions)
-        # TODO: converter estados de acordo com o dicionário de conversão
-        # conversion_states: Dict[estado_antigo (de acordo com new_states), novo estado]
+        conversion_states: Dict[State, Set[State]] = self._simplify_states(new_transitions)
+        self._states: Set[State] = set(conversion_states.keys())
+        new_final_states = self._get_new_final_states(list(conversion_states.values()))
+
+        print(conversion_states)
         transitions: Set[Transition] = set()
         final_states: Set[State] = set()
-        for old_state, new_state in conversion_states:
+        new_initial_states: Set[State] = e_closure[self._initial_state]
+
+        for new_state, old_state in conversion_states.items():
             for state in new_final_states:
-                final_states.add(conversion_states[state])
+                if state == old_state:
+                    final_states.add(new_state)
 
             for transition in new_transitions:
                 if transition[0] == old_state:
@@ -84,13 +88,14 @@ class FiniteAutomata:
                 if transition[2] == old_state:
                     transition[2] = new_state
 
+            if new_initial_states == old_state:
+                self._initial_state = new_state
+
         for transition in new_transitions:
             transitions.add(Transition(transition[0], transition[1], transition[2]))
 
         self._transitions = transitions
         self._final_states = final_states
-        self._states: Set[State] = set(conversion_states.values())
-        self._initial_state: State = conversion_states[e_closure[self._initial_state]]
 
         return None
 
@@ -123,7 +128,7 @@ class FiniteAutomata:
         for transition in list_of_new_transitions:
             old_state = transition[0]
             if old_state not in conversion.values():
-                conversion[State(name=chr(state))] = old_state
+                conversion[State(name=chr(state), label=str(old_state))] = old_state
                 state += 1
 
         return conversion
