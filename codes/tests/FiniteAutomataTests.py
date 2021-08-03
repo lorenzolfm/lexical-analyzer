@@ -5,7 +5,7 @@ from ..utils.model.Transition import Transition
 from ..utils.model.FiniteAutomata import FiniteAutomata
 
 class FiniteAutomataTests(unittest.TestCase):
-    def test_determinization(self) -> None:
+    def test_e_closure(self) -> None:
         a = State("A")
         b = State("B")
         c = State("C")
