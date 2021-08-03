@@ -33,6 +33,32 @@ class FiniteAutomata:
     def get_final_states(self) -> Set[State]:
         return self._final_states
 
+    def __repr__(self):
+        """
+        estados | a | b |
+        -----------------
+            A   | B | A |
+            B   | B | B |
+        """
+        states = [state.get_name() for state in self._states]
+        states = sorted(states)
+
+        string = " |"
+        for symbol in sorted(self._symbols):
+            string += f"{symbol}|"
+        string += "\n"
+        for state in sorted(self._states, key=State.get_name):
+            string += f"{state}|"
+            for symbol in sorted(self._symbols):
+                transition = self._get_transition(state, symbol)
+                if transition:
+                    string += f"{transition.get_destiny_state()}|"
+                else:
+                    string += "-|"
+
+            string += "\n"
+        return string
+
     def determinization(self) -> None:
         if ("&" not in self._symbols):
             return None
