@@ -45,10 +45,37 @@ class FiniteAutomata:
 
         return None
 
-    def _get_new_transitions(self, list_of_new_states: Set[Set[State]]) -> Set[Transition]:
-        new_transitions: Set[Transition] = set()
+    # TODO: testar
+    # A saída deve conter todas as transições deterministicas
+    # de um AF após ele ter sido determinizado.
+    # NÃO USAR TESTE COM MAIS DE UMA TRANSIÇÃO PELO MESMO SÍMBOLO. SOMENTE COM &-TRANSIÇÃO.
+    def _get_new_transitions(self, list_of_new_states: Set[Set[State]], e_closure):
+        new_transitions: set = set()
+        stack = list(list_of_new_states)
+        while stack:
+            new_states = stack.pop()
+            result_state: Set[State] = set()
+            for symbol in self._symbols:
+                for state in new_states:
+                    transition = self._get_transition(state, symbol)
+                    aux_state: State = transition.get_destiny_state()
+                    aux_e_closure = e_closure[aux_state]
+                    result_state |= aux_e_closure
+                    if (aux_e_closure not in list_of_new_states):
+                        stack.append(aux_e_closure)
 
-        return self._transitions
+                new_transitions.add((new_states, symbol, result_state))
+
+        return new_transitions
+
+    @staticmethod
+    def _simplify_states(set_of_new_transitions):
+        state: int = 65
+        conversion: Dict[Set[State], str] = {}
+        for transition in set_of_new_transitions:
+            new_state = transition[0]
+            conversion[new_state] = chr(state)
+            state += 1
 
     def _get_new_final_states(self, list_of_new_states: Set[Set[State]]) -> Set[Set[State]]:
         new_final_states: Set[Set[State]] = set()
