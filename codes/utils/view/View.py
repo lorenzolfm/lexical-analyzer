@@ -16,6 +16,10 @@ class View(Tk):
         menu: Container = Container(parent=self, label="Menu")
         self._create_project_form(menu)
         self._create_execution_form(menu)
+
+        view: Container = Container(parent=self, label="View", column=1)
+        self._create_regex_output_form(view)
+        self._create_symbol_table(view)
         return None
 
     def _create_project_form(self, parent: Container) -> None:
@@ -32,4 +36,16 @@ class View(Tk):
         new_form.add_text_entry(idd=idd)
         new_form.add_button(idd=idd, label="Enter Source Code", row=1)
         self._forms[idd] = new_form
+        return None
+
+    def _create_regex_output_form(self, parent: Container) -> None:
+        idd: str = "regex_output"
+        new_form: Form = Form(parent=parent, label="Regular Expressions")
+        new_form.add_text_entry(idd=idd, height=4)
+        return None
+
+    def _create_symbol_table(self, parent: Container) -> None:
+        idd: str = "symbol_table"
+        new_form: Form = Form(parent=parent, label="Symbol Table", row=1)
+        new_form.add_text_entry(idd=idd)
         return None
