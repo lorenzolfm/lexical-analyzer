@@ -41,7 +41,7 @@ class FiniteAutomata:
             B   | B | B |
         """
 
-        string = " |"
+        string = "\u03B4|"
         for symbol in sorted(self._symbols):
             string += f"{symbol}|"
         string += "\n"
