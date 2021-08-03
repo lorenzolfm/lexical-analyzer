@@ -66,7 +66,7 @@ class FiniteAutomata:
 
         # new_initial_state = e_closure[self._initial_state]
         # FIXME: Unhashable type: set
-        new_states: Set[Set[State]] = set(e_closure.values())
+        new_states: List[Set[State]] = list(e_closure.values())
         new_final_states = self._get_new_final_states(new_states)
         self._symbols.remove("&")
         new_transitions = self._get_new_transitions(new_states, e_closure)
@@ -96,10 +96,6 @@ class FiniteAutomata:
 
         return None
 
-    # TODO: testar
-    # A saída deve conter todas as transições deterministicas
-    # de um AF após ele ter sido determinizado.
-    # NÃO USAR TESTE COM MAIS DE UMA TRANSIÇÃO PELO MESMO SÍMBOLO. SOMENTE COM &-TRANSIÇÃO.
     def _get_new_transitions(self, list_of_new_states: List[Set[State]], e_closure):
         new_transitions = []
         stack = list(list_of_new_states)
@@ -133,12 +129,12 @@ class FiniteAutomata:
 
         return conversion
 
-    def _get_new_final_states(self, list_of_new_states: Set[Set[State]]) -> Set[Set[State]]:
-        new_final_states: Set[Set[State]] = set()
+    def _get_new_final_states(self, list_of_new_states: List[Set[State]]) -> List[Set[State]]:
+        new_final_states: List[Set[State]] = []
         for new_states in list_of_new_states:
             for state in new_states:
                 if state in self._final_states:
-                    new_final_states.add(new_states)
+                    new_final_states.append(new_states)
 
         return new_final_states
 
