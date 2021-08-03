@@ -1,11 +1,13 @@
 from genericType import T
 
-
 class Node:
     def __init__(self, value: T = None, left=None, right=None):
         self._value = value
         self._left = left
         self._right = right
+        self._firstpos = None
+        self._lastpos = None
+        self._followpos = None
 
     def get_value(self) -> T:
         return self._value
