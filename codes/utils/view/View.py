@@ -41,11 +41,11 @@ class View(Tk):
     def _create_regex_output_form(self, parent: Container) -> None:
         idd: str = "regex_output"
         new_form: Form = Form(parent=parent, label="Regular Expressions")
-        new_form.add_text_entry(idd=idd, height=4)
+        new_form.add_text_entry(idd=idd, height=4, width=50)
         return None
 
     def _create_symbol_table(self, parent: Container) -> None:
         idd: str = "symbol_table"
         new_form: Form = Form(parent=parent, label="Symbol Table", row=1)
-        new_form.add_text_entry(idd=idd)
+        new_form.add_text_entry(idd=idd, width=50)
         return None
