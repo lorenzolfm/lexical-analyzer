@@ -127,6 +127,8 @@ class FiniteAutomataTests(unittest.TestCase):
         new_states = list(e_closure.values())
         fa._symbols.remove("&")
         new_transitions = fa._get_new_transitions(new_states, e_closure)
-        # Era pra ser isso mesmo?
-        print(new_transitions)
+        # print(new_transitions)
+        # TODO: tirar esse teste daqui
+        converted_states = fa._simplify_states(new_transitions)
+        print(converted_states)
         return None

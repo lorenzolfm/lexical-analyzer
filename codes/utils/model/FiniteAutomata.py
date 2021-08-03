@@ -64,8 +64,6 @@ class FiniteAutomata:
 
         e_closure = self._get_e_closure()
 
-        # new_initial_state = e_closure[self._initial_state]
-        # FIXME: Unhashable type: set
         new_states: List[Set[State]] = list(e_closure.values())
         new_final_states = self._get_new_final_states(new_states)
         self._symbols.remove("&")
@@ -119,13 +117,14 @@ class FiniteAutomata:
         return new_transitions
 
     @staticmethod
-    def _simplify_states(set_of_new_transitions) -> Dict[Set[State], State]:
+    def _simplify_states(list_of_new_transitions) -> Dict[State, Set[State]]:
         state: int = 65
-        conversion: Dict[Set[State], State] = {}
-        for transition in set_of_new_transitions:
-            new_state = transition[0]
-            conversion[new_state] = State(name=chr(state))
-            state += 1
+        conversion: Dict[State, Set[State]] = {}
+        for transition in list_of_new_transitions:
+            old_state = transition[0]
+            if old_state not in conversion.values():
+                conversion[State(name=chr(state))] = old_state
+                state += 1
 
         return conversion
 
