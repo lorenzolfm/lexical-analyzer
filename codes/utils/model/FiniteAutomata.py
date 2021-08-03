@@ -72,6 +72,9 @@ class FiniteAutomata:
         conversion_states = self._simplify_states(new_transitions)
         # TODO: converter estados de acordo com o dicionário de conversão
         # conversion_states: Dict[estado_antigo (de acordo com new_states), nome do novo estado]
+        transitions: Set[Transition] = set()
+        for old_state, new_state in conversion_states:
+            pass
 
         return None
 
@@ -99,12 +102,12 @@ class FiniteAutomata:
         return new_transitions
 
     @staticmethod
-    def _simplify_states(set_of_new_transitions) -> Dict[Set[State], str]:
+    def _simplify_states(set_of_new_transitions) -> Dict[Set[State], State]:
         state: int = 65
-        conversion: Dict[Set[State], str] = {}
+        conversion: Dict[Set[State], State] = {}
         for transition in set_of_new_transitions:
             new_state = transition[0]
-            conversion[new_state] = chr(state)
+            conversion[new_state] = State(name=chr(state))
             state += 1
 
         return conversion
