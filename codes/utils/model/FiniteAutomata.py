@@ -100,8 +100,8 @@ class FiniteAutomata:
     # A saída deve conter todas as transições deterministicas
     # de um AF após ele ter sido determinizado.
     # NÃO USAR TESTE COM MAIS DE UMA TRANSIÇÃO PELO MESMO SÍMBOLO. SOMENTE COM &-TRANSIÇÃO.
-    def _get_new_transitions(self, list_of_new_states: Set[Set[State]], e_closure) -> Set[List]:
-        new_transitions: Set[List] = set()
+    def _get_new_transitions(self, list_of_new_states: List[Set[State]], e_closure):
+        new_transitions = []
         stack = list(list_of_new_states)
         while stack:
             new_states = stack.pop()
@@ -109,13 +109,14 @@ class FiniteAutomata:
             for symbol in self._symbols:
                 for state in new_states:
                     transition = self._get_transition(state, symbol)
-                    aux_state: State = transition.get_destiny_state()
-                    aux_e_closure = e_closure[aux_state]
-                    result_state |= aux_e_closure
-                    if (aux_e_closure not in list_of_new_states):
-                        stack.append(aux_e_closure)
+                    if transition:
+                        aux_state: State = transition.get_destiny_state()
+                        aux_e_closure = e_closure[aux_state]
+                        result_state |= aux_e_closure
+                        if (aux_e_closure not in list_of_new_states):
+                            stack.append(aux_e_closure)
 
-                new_transitions.add([new_states, symbol, result_state])
+                new_transitions.append([new_states, symbol, result_state])
 
         return new_transitions
 

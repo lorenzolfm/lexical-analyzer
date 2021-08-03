@@ -78,11 +78,7 @@ class FiniteAutomataTests(unittest.TestCase):
 
         symbols = {'a', 'b', '&'}
         transitions = {
-            Transition(q0, 'a', q1),
-            Transition(q0, '&', q1),
-            Transition(q1, 'a', q2),
-            Transition(q1, 'b', q2),
-            Transition(q1, '&', q2),
+            Transition(q0, 'a', q1), Transition(q0, '&', q1), Transition(q1, 'a', q2), Transition(q1, 'b', q2), Transition(q1, '&', q2),
             Transition(q2, 'b', q3),
             Transition(q3, 'a', q1),
             Transition(q3, 'b', q0),
@@ -105,6 +101,32 @@ class FiniteAutomataTests(unittest.TestCase):
         self.assertEqual(actual[q3], {q3})
         return None
 
-    # TODO: Testar isso
     def test_get_new_transitions(self) -> None:
+        q0, q1, q2, q3 = State("q0"), State("q1"), State("q2"), State("q3")
+        symbols = {'a', 'b', '&'}
+        transitions = {
+            Transition(q0, 'a', q1),
+            Transition(q0, '&', q1),
+            Transition(q1, 'a', q2),
+            Transition(q1, 'b', q2),
+            Transition(q1, '&', q2),
+            Transition(q2, 'b', q3),
+            Transition(q3, 'a', q1),
+            Transition(q3, 'b', q0),
+        }
+        initial_state = q0
+        final_states= {q2}
+        fa = FiniteAutomata(
+            states = {q0,q1,q2,q3},
+            symbols = symbols,
+            transitions = transitions,
+            initial_state = initial_state,
+            final_states = final_states
+        )
+        e_closure = fa._get_e_closure()
+        new_states = list(e_closure.values())
+        fa._symbols.remove("&")
+        new_transitions = fa._get_new_transitions(new_states, e_closure)
+        # Era pra ser isso mesmo?
+        print(new_transitions)
         return None
