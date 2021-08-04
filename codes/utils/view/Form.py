@@ -1,5 +1,5 @@
 from typing import Dict, Union, Callable
-from tkinter import ttk, Tk, Toplevel, StringVar, BooleanVar, Listbox, SINGLE, END
+from tkinter import ttk, Tk, Toplevel, StringVar, BooleanVar, Listbox, SINGLE, END, Text, FIRST
 
 class Form(ttk.LabelFrame):
     def __init__(
@@ -22,6 +22,7 @@ class Form(ttk.LabelFrame):
     def _init_attributes(self) -> None:
         self._entries: Dict[str, ttk.Entry] = {}
         self._buttons: Dict[str, ttk.Button] = {}
+        self._text_entries: Dict[str, Text] = {}
         self._labels: Dict[str, ttk.Label] = {}
         self._checkbuttons: Dict[str, ttk.Checkbutton] = {}
         self._listboxes: Dict[str, Listbox] = {}
@@ -45,6 +46,12 @@ class Form(ttk.LabelFrame):
         tk_button: ttk.Button = ttk.Button(master=self, text=label)
         tk_button.grid(row=row, column=column, rowspan=rowspan, columnspan=columnspan)
         self._buttons[idd] = tk_button
+        return None
+
+    def add_text_entry(self, idd: str, height: int = 20, width: int = 20, bg = "#ffffff", row: int = 0, column: int = 0) -> None:
+        tk_text: Text = Text(master=self, height=height, width=width, bg=bg)
+        tk_text.grid(row=row, column=column)
+        self._text_entries[idd] = tk_text
         return None
 
     def add_checkbutton(self, idd: str, label: str = "", row: int = 0, column: int = 0) -> None:
@@ -96,6 +103,11 @@ class Form(ttk.LabelFrame):
             for lb_id, _ in self._listboxes.items():
                 for obj in self._listboxes[lb_id].curselection():
                     res["listbox_selection"]["obj_name"] = self._listboxes[lb_id].get(obj)
+
+        if self._text_entries:
+            res["text_entries"] = {}
+            for txt_id, user_input in self._text_entries.items():
+                res["text_entries"][txt_id] = user_input.get("1.0", "end")
 
         callback(res)
         return res
