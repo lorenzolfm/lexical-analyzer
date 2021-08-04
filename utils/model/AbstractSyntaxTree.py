@@ -79,7 +79,7 @@ class AbstractSyntaxTree:
                     exclude = exclude.get_right_child()
 
             son: Node = exclude
-            if (exclude.get_left_child() is not None and exclude.get_right() is not None):
+            if (exclude.get_left_child() is not None and exclude.get_right_child() is not None):
                 son = exclude.get_right_child()
 
                 while (son.get_left_child() is not None):
