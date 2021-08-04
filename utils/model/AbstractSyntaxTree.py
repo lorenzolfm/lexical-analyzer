@@ -12,6 +12,7 @@ class AbstractSyntaxTree:
 
     def _create_syntax_tree_from_regex(self, regex: str) -> None:
         regex = self._setup_regex(regex)
+        regex = self._reverse_regex(regex)
         regex = self._reorg(regex)
         return None
 
@@ -35,7 +36,6 @@ class AbstractSyntaxTree:
 
     def _reorg(self, regex: str) -> str:
         reorg = ""
-        regex = self._reverse_regex(regex)
         operators = "|?*."
         i = 0
         while (i < len(regex) - 1):
@@ -44,17 +44,50 @@ class AbstractSyntaxTree:
 
             if actual == "(":
                 string = self._get_substr(regex, i + 1)
-                subregex: str = self._reorg(string)
+                subregex: str = "(" + self._reorg(string) + ")"
                 i += len(subregex)
+
+                if i < len(regex) and regex[i] in operators:
+                    reorg += regex[i]
+                    i += 1
+
                 reorg += subregex
             elif (actual not in operators) and (next_ in operators):
                 reorg += next_ + actual
                 i += 2
+            elif (actual == "*"):
+                reorg += actual
+                i += 1
             else:
                 reorg += actual + next_
                 i += 1
 
+        if "*" in reorg:
+            reorg = self._outro_parsing(reorg)
+
+        if len(regex) != len(reorg):
+            reorg += regex[-1]
+
         return reorg
+
+    def _outro_parsing(self, reorg: str) -> str:
+        operators = "|?*."
+        outra_reorg = ""
+        i = 0
+        while (i < len(reorg) - 1):
+            actual = reorg[i]
+            next_ = reorg[i+1]
+            if actual == "*" and next_ in operators:
+                outra_reorg += next_ + actual
+                i += 2
+            else:
+                outra_reorg += actual
+                i += 1
+
+        if len(reorg) != len(outra_reorg):
+            outra_reorg += reorg[-1]
+
+        return outra_reorg
 
     def _reverse_regex(self, regex: str) -> str:
         output: str = ""
