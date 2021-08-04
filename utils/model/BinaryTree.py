@@ -1,16 +1,17 @@
-from genericType import T
-from Node import Node
+from .genericType import T
+from .Node import Node
 from queue import Queue
 
 
 class BinaryTree:
-    def __init__(self, root: Node = None) -> None:
+    def __init__(self, regex: str) -> None:
         self._size = 0
-        self._root: Node = root
-        if root is not None:
-            self.insert(root)
+        self._create_tree_from_regex(regex)
 
-    def get_root(self) -> Node:
+    def _create_tree_from_regex(self, regex: str) -> None:
+        return None
+
+    def get_root(self):
         return self._root
 
     def get_size(self) -> int:
