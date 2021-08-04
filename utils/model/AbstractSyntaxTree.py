@@ -1,3 +1,4 @@
+from typing import List
 from queue import Queue
 from .Node import Node
 
@@ -9,9 +10,25 @@ class AbstractSyntaxTree:
         return None
 
     def _create_syntax_tree_from_regex(self, regex: str) -> None:
-        regex+= "#"
-        print(regex)
+        regex = self._setup_regex(regex)
         return None
+
+    def _setup_regex(self, regex: str) -> str:
+        new_regex: str = regex.replace(" ", "")
+        regex_size: int = len(new_regex)
+        previous: str = " "
+        n_concat: int = 0
+        for i in range(regex_size):
+            current = new_regex[i]
+            if self._needs_concat_symbol(previous, current):
+                new_regex = new_regex[:i+n_concat] + "." + new_regex[i+n_concat:]
+                n_concat += 1
+            previous = current
+
+        return new_regex + ".#"
+
+    def _needs_concat_symbol(self, previous: str, current: str) -> bool:
+        return (previous.isalnum() or previous in "*?)") and (current.isalnum() or current == "(")
 
     def get_root(self):
         return self._root
