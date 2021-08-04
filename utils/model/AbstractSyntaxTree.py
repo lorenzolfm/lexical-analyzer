@@ -1,12 +1,13 @@
-from typing import List
 from queue import Queue
 from .Node import Node
 
 class AbstractSyntaxTree:
     def __init__(self, regex: str) -> None:
+        regex = regex.replace(" ", "")
+        self._create_syntax_tree_from_regex(regex)
+
         self._size: int = 0
         self._root = Node()
-        self._create_syntax_tree_from_regex(regex)
         return None
 
     def _create_syntax_tree_from_regex(self, regex: str) -> None:
@@ -14,12 +15,13 @@ class AbstractSyntaxTree:
         return None
 
     def _setup_regex(self, regex: str) -> str:
-        new_regex: str = regex.replace(" ", "")
-        regex_size: int = len(new_regex)
+        regex_size: int = len(regex)
         previous: str = " "
         n_concat: int = 0
+
+        new_regex: str = regex
         for i in range(regex_size):
-            current = new_regex[i]
+            current = regex[i]
             if self._needs_concat_symbol(previous, current):
                 new_regex = new_regex[:i+n_concat] + "." + new_regex[i+n_concat:]
                 n_concat += 1
