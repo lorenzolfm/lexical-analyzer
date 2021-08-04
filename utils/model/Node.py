@@ -20,6 +20,9 @@ class Node:
     def get_right_child(self):
         return self._right_child
 
+    def set_value(self, value: str) -> None:
+        self._value = value
+
     def set_left_child(self, node) -> None:
         self._left_child = node
         return None
