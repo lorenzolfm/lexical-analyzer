@@ -12,6 +12,9 @@ class View(Tk):
         self._create_widgets()
         return None
 
+    def get_form_by_id(self, idd: str) -> Form:
+        return self._forms[idd]
+
     def _create_widgets(self) -> None:
         menu: Container = Container(parent=self, label="Menu")
         self._create_project_form(menu)

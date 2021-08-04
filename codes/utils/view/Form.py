@@ -1,5 +1,5 @@
 from typing import Dict, Union, Callable
-from tkinter import ttk, Tk, Toplevel, StringVar, BooleanVar, Listbox, SINGLE, END, Text
+from tkinter import ttk, Tk, Toplevel, StringVar, BooleanVar, Listbox, SINGLE, END, Text, FIRST
 
 class Form(ttk.LabelFrame):
     def __init__(
@@ -103,6 +103,11 @@ class Form(ttk.LabelFrame):
             for lb_id, _ in self._listboxes.items():
                 for obj in self._listboxes[lb_id].curselection():
                     res["listbox_selection"]["obj_name"] = self._listboxes[lb_id].get(obj)
+
+        if self._text_entries:
+            res["text_entries"] = {}
+            for txt_id, user_input in self._text_entries.items():
+                res["text_entries"][txt_id] = user_input.get("1.0", "end")
 
         callback(res)
         return res
