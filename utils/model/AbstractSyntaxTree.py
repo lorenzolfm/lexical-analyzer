@@ -12,6 +12,7 @@ class AbstractSyntaxTree:
 
     def _create_syntax_tree_from_regex(self, regex: str) -> None:
         regex = self._setup_regex(regex)
+        regex = self._reorg(regex)
         return None
 
     def _setup_regex(self, regex: str) -> str:
@@ -31,6 +32,57 @@ class AbstractSyntaxTree:
 
     def _needs_concat_symbol(self, previous: str, current: str) -> bool:
         return (previous.isalnum() or previous in "*?)") and (current.isalnum() or current == "(")
+
+    def _reorg(self, regex: str) -> str:
+        reorg = ""
+        regex = self._reverse_regex(regex)
+        operators = "|?*."
+        i = 0
+        while (i < len(regex) - 1):
+            actual = regex[i]
+            next_ = regex[i+1]
+
+            if actual == "(":
+                string = self._get_substr(regex, i + 1)
+                subregex: str = self._reorg(string)
+                i += len(subregex)
+                reorg += subregex
+            elif (actual not in operators) and (next_ in operators):
+                reorg += next_ + actual
+                i += 2
+            else:
+                reorg += actual + next_
+                i += 1
+
+        return reorg
+
+    def _reverse_regex(self, regex: str) -> str:
+        output: str = ""
+        for i in reversed(regex):
+            if i == "(":
+                output += ")"
+            elif i == ")":
+                output += "("
+            else:
+                output += i
+        return output
+
+    def _get_substr(self, string: str, index: int) -> str:
+        substring = ""
+        stack = ['(']
+        while (stack):
+            if string[index] == ")":
+                stack.pop()
+                if stack:
+                    substring += string[index]
+            elif string[index] == "(":
+                stack.append("(")
+                substring += string[index]
+            else:
+                substring += string[index]
+            index += 1
+
+        return substring
 
     def get_root(self):
         return self._root

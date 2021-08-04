@@ -27,3 +27,42 @@ class AbstractSyntaxTreeTests(unittest.TestCase):
         actual = self.tree._setup_regex("abcd(a|d)?ad")
         self.assertEqual(actual, expected)
         return None
+
+    def test_get_substr(self) -> None:
+        string = "(abcde)"
+        expected = "abcde"
+        actual = self.tree._get_substr(string, 1)
+        self.assertEqual(actual, expected)
+
+        string = "(ab(abc)ab)"
+        expected = "ab(abc)ab"
+        actual = self.tree._get_substr(string, 1)
+        self.assertEqual(actual, expected)
+
+        string = "asdf(ab(abc)ab)"
+        expected = "ab(abc)ab"
+        actual = self.tree._get_substr(string, 5)
+        self.assertEqual(actual, expected)
+
+        string = "#.*(b|a).a"
+        expected = "b|a"
+        actual = self.tree._get_substr(string, 4)
+        self.assertEqual(actual, expected)
+        return None
+
+    def test_revert(self) -> None:
+        expected = "#.*(b|a).a"
+        actual = self.tree._reverse_regex("a.(a|b)*.#")
+        self.assertEqual(actual, expected)
+        return None
+
+    def test_reorg(self) -> None:
+        expected = ".#*a.a"
+        actual = self.tree._reorg("a.a*.#")
+        self.assertEqual(actual, expected)
+
+        expected = ".#.*(|ba)a"
+        actual = self.tree._reorg("a.(a|b)*.#")
+        self.assertEqual(actual, expected)
+        return None
+
