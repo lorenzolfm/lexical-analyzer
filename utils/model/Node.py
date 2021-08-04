@@ -4,6 +4,7 @@ class Node:
         self._value = value
         self._left_child = left_child
         self._right_child = right_child
+        self._position: int = 0
         self._firstpos = None
         self._lastpos = None
         self._followpos = None
