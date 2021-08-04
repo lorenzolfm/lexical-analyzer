@@ -1,7 +1,7 @@
 import unittest
 
-from codes.tests.FiniteAutomataTests import FiniteAutomataTests # noqa
-from codes.tests.AlgorithmTest import AlgorithmTest
+from tests.FiniteAutomataTests import FiniteAutomataTests
+from tests.AlgorithmTest import AlgorithmTest
 
 if __name__ == '__main__':
     unittest.main()

@@ -1,10 +1,10 @@
 import unittest
 
-from ..utils.model.FiniteAutomata import FiniteAutomata
-from ..utils.model.Transition import Transition
-from ..utils.model.State import State
+from utils.model.FiniteAutomata import FiniteAutomata
+from utils.model.Transition import Transition
+from utils.model.State import State
 
-from ..utils.algorithm import automata_union
+from utils.algorithm import automata_union
 
 class AlgorithmTest(unittest.TestCase):
     def test_automata_union(self) -> None:

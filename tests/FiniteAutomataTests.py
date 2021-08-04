@@ -1,9 +1,8 @@
 import unittest
 
-from ..utils.algorithm import automata_union
-from ..utils.model.State import State
-from ..utils.model.Transition import Transition
-from ..utils.model.FiniteAutomata import FiniteAutomata
+from utils.model.State import State
+from utils.model.Transition import Transition
+from utils.model.FiniteAutomata import FiniteAutomata
 
 class FiniteAutomataTests(unittest.TestCase):
     def test_e_closure(self) -> None:
