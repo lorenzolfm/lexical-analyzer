@@ -10,7 +10,11 @@ class AbstractSyntaxTree:
         self._left_child = None
         self._right_child = None
 
-def construct_tree(postfix_regex: str) -> AbstractSyntaxTree:
+    def __repr__(self) -> str:
+        return self._value
+
+def construct_tree(regex: str) -> AbstractSyntaxTree:
+    postfix_regex = setup_regex(regex)
     stack: List = []
     for char in postfix_regex:
         if char not in operators:
@@ -21,8 +25,8 @@ def construct_tree(postfix_regex: str) -> AbstractSyntaxTree:
                 tree = AbstractSyntaxTree(char)
                 op_1 = stack.pop()
                 op_2 = stack.pop()
-                tree._left_child = op_1
-                tree._right_child = op_2
+                tree._left_child = op_2
+                tree._right_child = op_1
                 stack.append(tree)
             else:
                 tree = AbstractSyntaxTree(char)

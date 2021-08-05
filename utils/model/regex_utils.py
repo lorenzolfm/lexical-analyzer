@@ -4,12 +4,21 @@ operators: str = "|?*."
 
 # Testada
 def setup_regex(regex: str) -> str:
+    # TODO: arrumar
     regex = remove_white_spaces(regex)
     regex = insert_concats(regex)
     regex = add_ending(regex)
     regex = reverse_regex(regex)
     regex = reorg_regex(regex)
-    return regex
+
+    output = ""
+    for char in regex:
+        if (char != "(") and (char != ")"):
+            output += char
+
+    output = output[::-1]
+
+    return output
 
 # Testada
 def remove_white_spaces(regex: str) -> str:
@@ -55,7 +64,7 @@ def reverse_regex(regex: str) -> str:
 
 def reorg_regex(regex: str) -> str:
     new_regex: str = ""
-    operators: str = "|?*."
+    # operators: str = "|?*."
     i: int = 0
 
     while (i < len(regex) - 1):
@@ -81,8 +90,8 @@ def reorg_regex(regex: str) -> str:
 
 def reorg_subregex(regex: str, new_regex: str, index: int) -> Tuple[str, int]:
     substr: str = get_substr(regex, index + 1)
-    subregex: str = reorg_regex(substr)
-    index += len(subregex) + 2
+    subregex: str = "(" + reorg_regex(substr) + ")"
+    index += len(subregex)
 
     if (index < len(regex)) and (regex[index] in operators):
         new_regex += regex[index]
