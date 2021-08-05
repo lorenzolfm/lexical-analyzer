@@ -1,4 +1,4 @@
-from typing import Union, List
+from typing import List
 
 
 class Node:
@@ -6,11 +6,42 @@ class Node:
         self._value = value
         self._left_child = left_child
         self._right_child = right_child
-        # self._position: int = 0
-        # self._nullable: bool = False
-        # self._firstpos = None
-        # self._lastpos = None
-        # self._followpos = None
+        self._position: int = 0
+        self._nullable: bool = False
+        self._firstpos: set = set()
+        self._lastpos: set = set()
+        self._followpos: set = set()
+
+    def get_position(self) -> int:
+        return self._position
+
+    def get_nullable(self) -> bool:
+        return self._nullable
+
+    def get_firstpos(self) -> set:
+        return self._firstpos
+
+    def get_lastpos(self) -> set:
+        return self._lastpos
+
+    def get_followpos(self) -> set:
+        return self._followpos
+
+    def set_position(self, pos: int) -> None:
+        self._position = pos
+        return None
+
+    def set_firstpos(self, firstpos: set) -> None:
+        self._firstpos = firstpos
+        return None
+
+    def set_lastpos(self, lastpos: set) -> None:
+        self._lastpos = lastpos
+        return None
+
+    def set_followpos(self, followpos: set) -> None:
+        self._followpos = followpos
+        return None
 
     def get_value(self) -> str:
         return self._value
@@ -32,9 +63,6 @@ class Node:
         self._right_child = node
         return None
 
-    def __repr__(self):
-        return self.get_value()
-
     def in_order(self, array: List) -> None:
         if self._left_child is not None:
             self._left_child.in_order(array)
@@ -45,3 +73,6 @@ class Node:
             self._right_child.in_order(array)
 
         return None
+
+    def __repr__(self):
+        return self.get_value()
