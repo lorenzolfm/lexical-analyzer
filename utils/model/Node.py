@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Union, List
 
 
 class Node:
@@ -34,3 +34,14 @@ class Node:
 
     def __repr__(self):
         return self.get_value()
+
+    def in_order(self, array: List) -> None:
+        if self._left_child is not None:
+            self._left_child.in_order(array)
+
+        array.append(self._value)
+
+        if self._right_child is not None:
+            self._right_child.in_order(array)
+
+        return None

@@ -10,3 +10,4 @@ if __name__ == "__main__":
     # .#.*(.*(|ba)a)a
     # tree = construct_tree("a(a(a|b)*)*")
     tree = AbstractSyntaxTree("(a|b)*abb")
+    print(tree.in_order())

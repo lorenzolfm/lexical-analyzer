@@ -1,5 +1,4 @@
-from typing import Optional, List
-from queue import Queue
+from typing import List
 
 from .regex_utils import setup_regex, operators
 from .Node import Node
@@ -28,7 +27,7 @@ class AbstractSyntaxTree:
                 else:
                     tree = Node(char)
                     op = stack.pop()
-                    tree._right_child = op
+                    tree._left_child = op
                     stack.append(tree)
 
         self._root: Node = stack.pop()
@@ -36,6 +35,13 @@ class AbstractSyntaxTree:
 
     def get_root(self):
         return self._root
+
+    def in_order(self):
+        array: List[Node] = []
+        if not self.empty():
+            self._root.in_order(array)
+
+        return array
 
     def get_size(self) -> int:
         return self._size
