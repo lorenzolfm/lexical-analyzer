@@ -1,146 +1,175 @@
-from typing import Optional
+from typing import Optional, List
 from queue import Queue
 
-from .regex_utils import setup_regex
+from .regex_utils import setup_regex, operators
 from .Node import Node
 
-
 class AbstractSyntaxTree:
-    def __init__(self, regex: str) -> None:
-        self._size: int = 0
-        self._create_syntax_tree_from_regex(regex)
+    def __init__(self, value: str):
+        self._value: str = value
+        self._left_child = None
+        self._right_child = None
 
-    def _create_syntax_tree_from_regex(self, regex: str) -> None:
-        regex = setup_regex(regex)
-        for char in regex:
-            self.insert_regex(char)
-
-        return None
-
-    def get_root(self):
-        return self._root
-
-    def get_size(self) -> int:
-        return self._size
-
-    def empty(self) -> bool:
-        return self._size == 0
-
-    def _check_child(self, parent: Node, node: Node) -> bool:
-        left_child: Optional[Node] = parent.get_left_child()
-        right_child: Optional[Node] = parent.get_right_child()
-        operators: str = "|?*."
-        if right_child is None:
-            parent.set_right_child(node)
-            return True
-        elif right_child.get_value() in operators:
-            return self._check_child(right_child, node)
-        elif (parent.get_value() in operators) and (parent.get_value != "*"):     # TODO: pode dar merda
-            if left_child is None:
-                parent.set_left_child(node)
-                return True
+def construct_tree(postfix_regex: str) -> AbstractSyntaxTree:
+    stack: List = []
+    for char in postfix_regex:
+        if char not in operators:
+            tree = AbstractSyntaxTree(char)
+            stack.append(tree)
+        else:
+            if char != "*":
+                tree = AbstractSyntaxTree(char)
+                op_1 = stack.pop()
+                op_2 = stack.pop()
+                tree._left_child = op_1
+                tree._right_child = op_2
+                stack.append(tree)
             else:
-                return self._check_child(left_child, node)
-        elif left_child.get_value() in operators:
-            return self._check_child(left_child, node)
-        elif (left_child.get_value() not in operators) and (right_child.get_value() not in operators):
-            return False
+                tree = AbstractSyntaxTree(char)
+                op = stack.pop()
+                tree._right_child = op
+                stack.append(tree)
 
-    def insert_regex(self, char: str) -> None:
-        node: Node = Node(char)
-        operators: str = "|?*."
-        if self.empty():
-            self._root: Node = node
-        else:
-            aux: Node = self._root
-            flag: bool = True
+    tree: AbstractSyntaxTree = stack.pop()
+    return tree
 
-            self._check_child(aux, node)
 
-        self._size += 1
+# class AbstractSyntaxTree:
+    # def __init__(self, regex: str) -> None:
+        # self._size: int = 0
+        # self._create_syntax_tree_from_regex(regex)
 
-        return None
+    # def _create_syntax_tree_from_regex(self, regex: str) -> None:
+        # regex = setup_regex(regex)
+        # for char in regex:
+            # self.insert_regex(char)
 
-    def insert(self, value) -> None:
-        new_node = Node(value=value)
-        if self.empty():
-            self._root = new_node
-        elif self.contains(value):
-            return
-        else:
-            aux = self._root
-            flag: bool = True
+        # return None
 
-            while flag:
-                if (value < aux.get_value()):
-                    if (aux.get_left_child() is None):
-                        aux.set_left_child(new_node)
-                        flag = False
-                    else:
-                        aux = aux.get_left_child()
-                else:
-                    if (aux.get_right_child() is None):
-                        aux.set_right_child(new_node)
-                        flag = False
-                    else:
-                        aux = aux.get_right_child()
+    # def get_root(self):
+        # return self._root
 
-        self._size += 1
+    # def get_size(self) -> int:
+        # return self._size
 
-    def contains(self, value) -> bool:
-        if self.empty():
-            return False
-        else:
-            aux: Node = self._root
+    # def empty(self) -> bool:
+        # return self._size == 0
 
-            while (aux is not None):
-                if (aux.get_value() == value):
-                    return True
-                elif (aux.get_value() < value):
-                    aux = aux.get_right_child()
-                else:
-                    aux = aux.get_left_child()
+    # def _check_child(self, parent: Node, node: Node) -> bool:
+        # left_child: Optional[Node] = parent.get_left_child()
+        # right_child: Optional[Node] = parent.get_right_child()
+        # operators: str = "|?*."
+        # if right_child is None:
+            # parent.set_right_child(node)
+            # return True
+        # elif right_child.get_value() in operators:
+            # return self._check_child(right_child, node)
+        # elif (parent.get_value() in operators) and (parent.get_value != "*"):     # TODO: pode dar merda
+            # if left_child is None:
+                # parent.set_left_child(node)
+                # return True
+            # else:
+                # return self._check_child(left_child, node)
+        # elif left_child.get_value() in operators:
+            # return self._check_child(left_child, node)
+        # elif (left_child.get_value() not in operators) and (right_child.get_value() not in operators):
+            # return False
 
-            return False
+    # def insert_regex(self, char: str) -> None:
+        # node: Node = Node(char)
+        # operators: str = "|?*."
+        # if self.empty():
+            # self._root: Node = node
+        # else:
+            # aux: Node = self._root
+            # flag: bool = True
 
-    def remove(self, value) -> None:
-        if self.empty():
-            return
-        elif (not self.contains(value)):
-            return
-        else:
-            exclude: Node = self._root
+            # self._check_child(aux, node)
 
-            while (exclude.get_value() != value):
-                if (value < exclude.get_value()):
-                    exclude = exclude.get_left_child()
-                else:
-                    exclude = exclude.get_right_child()
+        # self._size += 1
 
-            son: Node = exclude
-            if (exclude.get_left_child() is not None and exclude.get_right_child() is not None):
-                son = exclude.get_right_child()
+        # return None
 
-                while (son.get_left_child() is not None):
-                    son = son.get_left_child()
+    # def insert(self, value) -> None:
+        # new_node = Node(value=value)
+        # if self.empty():
+            # self._root = new_node
+        # elif self.contains(value):
+            # return
+        # else:
+            # aux = self._root
+            # flag: bool = True
 
-                exclude.set_value(son.get_value())
-                if (son.get_right_child() is not None):
-                    son.set_value(son.get_right_child().get_value())
-                    son.set_right_child(son.get_right_child().get_right())
+            # while flag:
+                # if (value < aux.get_value()):
+                    # if (aux.get_left_child() is None):
+                        # aux.set_left_child(new_node)
+                        # flag = False
+                    # else:
+                        # aux = aux.get_left_child()
+                # else:
+                    # if (aux.get_right_child() is None):
+                        # aux.set_right_child(new_node)
+                        # flag = False
+                    # else:
+                        # aux = aux.get_right_child()
 
-            elif (exclude.get_right_child() is not None):
-                exclude.set_value(exclude.get_right_child().get_value())
-                exclude.set_right_child(exclude.get_right_child().get_right())
+        # self._size += 1
 
-            elif (exclude.get_left_child() is not None):
-                exclude.set_value(exclude.get_left_child().get_value())
-                exclude.set_left_child(exclude.get_left_child().get_left())
+    # def contains(self, value) -> bool:
+        # if self.empty():
+            # return False
+        # else:
+            # aux: Node = self._root
 
-            else:
-                del exclude
+            # while (aux is not None):
+                # if (aux.get_value() == value):
+                    # return True
+                # elif (aux.get_value() < value):
+                    # aux = aux.get_right_child()
+                # else:
+                    # aux = aux.get_left_child()
 
-        self._size -= 1
+            # return False
+
+    # def remove(self, value) -> None:
+        # if self.empty():
+            # return
+        # elif (not self.contains(value)):
+            # return
+        # else:
+            # exclude: Node = self._root
+
+            # while (exclude.get_value() != value):
+                # if (value < exclude.get_value()):
+                    # exclude = exclude.get_left_child()
+                # else:
+                    # exclude = exclude.get_right_child()
+
+            # son: Node = exclude
+            # if (exclude.get_left_child() is not None and exclude.get_right_child() is not None):
+                # son = exclude.get_right_child()
+
+                # while (son.get_left_child() is not None):
+                    # son = son.get_left_child()
+
+                # exclude.set_value(son.get_value())
+                # if (son.get_right_child() is not None):
+                    # son.set_value(son.get_right_child().get_value())
+                    # son.set_right_child(son.get_right_child().get_right())
+
+            # elif (exclude.get_right_child() is not None):
+                # exclude.set_value(exclude.get_right_child().get_value())
+                # exclude.set_right_child(exclude.get_right_child().get_right())
+
+            # elif (exclude.get_left_child() is not None):
+                # exclude.set_value(exclude.get_left_child().get_value())
+                # exclude.set_left_child(exclude.get_left_child().get_left())
+
+            # else:
+                # del exclude
+
+        # self._size -= 1
 
     # def __repr__(self):
     #     aux = self._root
