@@ -1,17 +1,21 @@
-from .regex_utils import setup_regex
+from typing import Optional
 from queue import Queue
+
+from .regex_utils import setup_regex
 from .Node import Node
+
 
 class AbstractSyntaxTree:
     def __init__(self, regex: str) -> None:
         self._create_syntax_tree_from_regex(regex)
 
         self._size: int = 0
-        self._root = Node()
-        return None
 
     def _create_syntax_tree_from_regex(self, regex: str) -> None:
         regex = setup_regex(regex)
+        for char in regex:
+            self.insert_regex(char)
+
         return None
 
     def get_root(self):
@@ -22,6 +26,39 @@ class AbstractSyntaxTree:
 
     def empty(self) -> bool:
         return self._size == 0
+
+    def _check_child(self, parent: Node, node: Node) -> bool:
+        left_child: Optional[Node] = parent.get_left_child()
+        right_child: Optional[Node] = parent.get_right_child()
+        operators: str = "|?*."
+        if right_child is None:
+            parent.set_right_child(node)
+            return True
+        elif right_child.get_value() in operators:
+            return self._check_child(right_child, node)
+        elif (parent.get_value() in operators) and (parent.get_value != "*"):     # TODO: pode dar merda
+            if left_child is None:
+                parent.set_left_child(node)
+                return True
+            else:
+                return False
+        elif left_child.get_value() in operators:
+            return self._check_child(left_child, node)
+        elif (left_child.get_value() not in operators) and (right_child.get_value() not in operators):
+            return False
+
+    def insert_regex(self, char: str) -> None:
+        node: Node = Node(char)
+        operators: str = "|?*."
+        if self.empty():
+            self._root: Node = node
+        else:
+            aux: Node = self._root
+            flag: bool = True
+
+            self._check_child(aux, node)
+
+        return None
 
     def insert(self, value) -> None:
         new_node = Node(value=value)

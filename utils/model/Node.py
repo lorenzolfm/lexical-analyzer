@@ -1,4 +1,6 @@
 from typing import Union
+
+
 class Node:
     def __init__(self, value: str = "", left_child = None, right_child = None) -> None:
         self._value = value
