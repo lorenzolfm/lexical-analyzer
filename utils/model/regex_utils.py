@@ -1,6 +1,7 @@
 from typing import Tuple, List
 
-operators: str = "|?*."
+from .newTypes import operators
+
 
 # Testada
 def setup_regex(regex: str) -> str:
@@ -64,7 +65,6 @@ def reverse_regex(regex: str) -> str:
 
 def reorg_regex(regex: str) -> str:
     new_regex: str = ""
-    # operators: str = "|?*."
     i: int = 0
 
     while (i < len(regex) - 1):

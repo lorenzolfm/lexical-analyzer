@@ -1,12 +1,14 @@
-from typing import List
+from typing import List, Optional
 
 from .regex_utils import setup_regex, operators
+from .newTypes import closure
 from .Node import Node
 
 
 class AbstractSyntaxTree:
     def __init__(self, regex: str) -> None:
-        self._size = len(regex)
+        self._size: int = len(regex)
+        self._root: Optional[Node] = None
         self._create_syntax_tree_from_regex(regex)
 
     def _create_syntax_tree_from_regex(self, regex: str) -> None:
@@ -16,19 +18,18 @@ class AbstractSyntaxTree:
             if char not in operators:
                 tree = Node(char)
                 stack.append(tree)
+            elif char != closure:
+                tree = Node(char)
+                op_1 = stack.pop()
+                op_2 = stack.pop()
+                tree._left_child = op_2
+                tree._right_child = op_1
+                stack.append(tree)
             else:
-                if char != "*":
-                    tree = Node(char)
-                    op_1 = stack.pop()
-                    op_2 = stack.pop()
-                    tree._left_child = op_2
-                    tree._right_child = op_1
-                    stack.append(tree)
-                else:
-                    tree = Node(char)
-                    op = stack.pop()
-                    tree._left_child = op
-                    stack.append(tree)
+                tree = Node(char)
+                op = stack.pop()
+                tree._left_child = op
+                stack.append(tree)
 
         self._root: Node = stack.pop()
         return None
