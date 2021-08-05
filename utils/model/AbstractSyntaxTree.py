@@ -7,9 +7,8 @@ from .Node import Node
 
 class AbstractSyntaxTree:
     def __init__(self, regex: str) -> None:
-        self._create_syntax_tree_from_regex(regex)
-
         self._size: int = 0
+        self._create_syntax_tree_from_regex(regex)
 
     def _create_syntax_tree_from_regex(self, regex: str) -> None:
         regex = setup_regex(regex)
@@ -41,7 +40,7 @@ class AbstractSyntaxTree:
                 parent.set_left_child(node)
                 return True
             else:
-                return False
+                return self._check_child(left_child, node)
         elif left_child.get_value() in operators:
             return self._check_child(left_child, node)
         elif (left_child.get_value() not in operators) and (right_child.get_value() not in operators):
@@ -57,6 +56,8 @@ class AbstractSyntaxTree:
             flag: bool = True
 
             self._check_child(aux, node)
+
+        self._size += 1
 
         return None
 
@@ -141,27 +142,27 @@ class AbstractSyntaxTree:
 
         self._size -= 1
 
-    def __repr__(self):
-        aux = self._root
-        fila = Queue()
-        fila.put(aux)
-        saida = ""
-        separator = ""
-        while not fila.empty():
-            fila_aux = Queue()
-            while not fila.empty():
-                node = fila.get()
-                saida += f" {node} {separator}"
-                if (node is not None and (node.get_left() is not None or node.get_right() is not None)):
-                    fila_aux.put(node.get_left())
-                    fila_aux.put(node.get_right())
-
-                if separator == "X":
-                    separator = "|"
-                else:
-                    separator = "X"
-
-            fila = fila_aux
-            saida += "\n"
-
-        return saida
+    # def __repr__(self):
+    #     aux = self._root
+    #     fila = Queue()
+    #     fila.put(aux)
+    #     saida = ""
+    #     separator = ""
+    #     while not fila.empty():
+    #         fila_aux = Queue()
+    #         while not fila.empty():
+    #             node = fila.get()
+    #             saida += f" {node} {separator}"
+    #             if (node is not None and (node.get_left() is not None or node.get_right() is not None)):
+    #                 fila_aux.put(node.get_left())
+    #                 fila_aux.put(node.get_right())
+    #
+    #             if separator == "X":
+    #                 separator = "|"
+    #             else:
+    #                 separator = "X"
+    #
+    #         fila = fila_aux
+    #         saida += "\n"
+    #
+    #     return saida

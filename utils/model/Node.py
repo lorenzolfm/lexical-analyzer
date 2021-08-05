@@ -6,12 +6,11 @@ class Node:
         self._value = value
         self._left_child = left_child
         self._right_child = right_child
-        self._position: int = 0
-        self._nullable: bool = False
-        self._firstpos = None
-        self._lastpos = None
-        self._followpos = None
-        return None
+        # self._position: int = 0
+        # self._nullable: bool = False
+        # self._firstpos = None
+        # self._lastpos = None
+        # self._followpos = None
 
     def get_value(self) -> str:
         return self._value
@@ -32,3 +31,6 @@ class Node:
     def set_right_child(self, node) -> None:
         self._right_child = node
         return None
+
+    def __repr__(self):
+        return self.get_value()

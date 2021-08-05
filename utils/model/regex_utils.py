@@ -81,8 +81,8 @@ def reorg_regex(regex: str) -> str:
 
 def reorg_subregex(regex: str, new_regex: str, index: int) -> Tuple[str, int]:
     substr: str = get_substr(regex, index + 1)
-    subregex: str = "(" + reorg_regex(substr) + ")"
-    index += len(subregex)
+    subregex: str = reorg_regex(substr)
+    index += len(subregex) + 2
 
     if (index < len(regex)) and (regex[index] in operators):
         new_regex += regex[index]
