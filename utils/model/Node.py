@@ -1,11 +1,16 @@
-from typing import List
+from __future__ import annotations
+from typing import List, Optional
 
 
 class Node:
-    def __init__(self, value: str = "", left_child = None, right_child = None) -> None:
+    def __init__(self,
+                 value: str = "",
+                 left_child: Optional[Node] = None,
+                 right_child: Optional[Node] = None
+                 ) -> None:
         self._value = value
-        self._left_child = left_child
-        self._right_child = right_child
+        self._left_child: Optional[Node] = left_child
+        self._right_child: Optional[Node] = right_child
         self._position: int = 0
         self._nullable: bool = False
         self._firstpos: set = set()
@@ -46,20 +51,20 @@ class Node:
     def get_value(self) -> str:
         return self._value
 
-    def get_left_child(self):
+    def get_left_child(self) -> Optional[Node]:
         return self._left_child
 
-    def get_right_child(self):
+    def get_right_child(self) -> Optional[Node]:
         return self._right_child
 
     def set_value(self, value: str) -> None:
         self._value = value
 
-    def set_left_child(self, node) -> None:
+    def set_left_child(self, node: Node) -> None:
         self._left_child = node
         return None
 
-    def set_right_child(self, node) -> None:
+    def set_right_child(self, node: Node) -> None:
         self._right_child = node
         return None
 
@@ -74,5 +79,5 @@ class Node:
 
         return None
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return self.get_value()
