@@ -1,3 +1,4 @@
+from .regex_utils import setup_regex
 from queue import Queue
 from .Node import Node
 
@@ -10,115 +11,8 @@ class AbstractSyntaxTree:
         return None
 
     def _create_syntax_tree_from_regex(self, regex: str) -> None:
-        regex = regex.replace(" ", "")
-        regex = self._setup_regex(regex)
-        regex = self._reverse_regex(regex)
-        regex = self._reorg_regex(regex)
+        regex = setup_regex(regex)
         return None
-
-    def _setup_regex(self, regex: str) -> str:
-        n_concat: int = 0
-        new_regex: str = regex
-        previous: str = " "
-
-        for i in range(len(regex)):
-            current: str = regex[i]
-            if self._needs_concat_symbol(previous, current):
-                new_regex = self._add_concat_symbol(new_regex, i, n_concat)
-                n_concat += 1
-            previous = current
-
-        new_regex += ".#"
-        return new_regex
-
-    def _needs_concat_symbol(self, previous: str, current: str) -> bool:
-        return (previous.isalnum() or previous in "*?)") and (current.isalnum() or current == "(")
-
-    def _add_concat_symbol(self, regex: str, index: int, n_concat: int) -> str:
-        return regex[:index + n_concat] + "." + regex[index + n_concat:]
-
-    def _reorg_regex(self, regex: str) -> str:
-        reorg = ""
-        operators = "|?*."
-        i = 0
-
-        while (i < len(regex) - 1):
-            actual, next_ = regex[i], regex[i+1]
-
-            if actual == "(":
-                string = self._get_substr(regex, i + 1)
-                subregex: str = "(" + self._reorg_regex(string) + ")"
-                i += len(subregex)
-
-                if i < len(regex) and regex[i] in operators:
-                    reorg += regex[i]
-                    i += 1
-
-                reorg += subregex
-            elif (actual not in operators) and (next_ in operators):
-                reorg += next_ + actual
-                i += 2
-            elif (actual == "*"):
-                reorg += actual
-                i += 1
-            else:
-                reorg += actual + next_
-                i += 1
-
-        if "*" in reorg:
-            reorg = self._outro_parsing(reorg)
-
-        if len(regex) != len(reorg):
-            reorg += regex[-1]
-
-        return reorg
-
-    def _outro_parsing(self, reorg: str) -> str:
-        operators = "|?*."
-        outra_reorg = ""
-        i = 0
-        while (i < len(reorg) - 1):
-            actual = reorg[i]
-            next_ = reorg[i+1]
-            if actual == "*" and next_ in operators:
-                outra_reorg += next_ + actual
-                i += 2
-            else:
-                outra_reorg += actual
-                i += 1
-
-        if len(reorg) != len(outra_reorg):
-            outra_reorg += reorg[-1]
-
-        return outra_reorg
-
-    def _reverse_regex(self, regex: str) -> str:
-        output: str = ""
-        for i in reversed(regex):
-            if i == "(":
-                output += ")"
-            elif i == ")":
-                output += "("
-            else:
-                output += i
-        return output
-
-    def _get_substr(self, string: str, index: int) -> str:
-        substring = ""
-        stack = ['(']
-        while (stack):
-            if string[index] == ")":
-                stack.pop()
-                if stack:
-                    substring += string[index]
-            elif string[index] == "(":
-                stack.append("(")
-                substring += string[index]
-            else:
-                substring += string[index]
-            index += 1
-
-        return substring
 
     def get_root(self):
         return self._root
