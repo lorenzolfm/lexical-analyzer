@@ -3,7 +3,6 @@ from .Node import Node
 
 class AbstractSyntaxTree:
     def __init__(self, regex: str) -> None:
-        regex = regex.replace(" ", "")
         self._create_syntax_tree_from_regex(regex)
 
         self._size: int = 0
@@ -11,40 +10,44 @@ class AbstractSyntaxTree:
         return None
 
     def _create_syntax_tree_from_regex(self, regex: str) -> None:
+        regex = regex.replace(" ", "")
         regex = self._setup_regex(regex)
         regex = self._reverse_regex(regex)
-        regex = self._reorg(regex)
+        regex = self._reorg_regex(regex)
         return None
 
     def _setup_regex(self, regex: str) -> str:
-        regex_size: int = len(regex)
-        previous: str = " "
         n_concat: int = 0
-
         new_regex: str = regex
-        for i in range(regex_size):
-            current = regex[i]
+        previous: str = " "
+
+        for i in range(len(regex)):
+            current: str = regex[i]
             if self._needs_concat_symbol(previous, current):
-                new_regex = new_regex[:i+n_concat] + "." + new_regex[i+n_concat:]
+                new_regex = self._add_concat_symbol(new_regex, i, n_concat)
                 n_concat += 1
             previous = current
 
-        return new_regex + ".#"
+        new_regex += ".#"
+        return new_regex
 
     def _needs_concat_symbol(self, previous: str, current: str) -> bool:
         return (previous.isalnum() or previous in "*?)") and (current.isalnum() or current == "(")
 
-    def _reorg(self, regex: str) -> str:
+    def _add_concat_symbol(self, regex: str, index: int, n_concat: int) -> str:
+        return regex[:index + n_concat] + "." + regex[index + n_concat:]
+
+    def _reorg_regex(self, regex: str) -> str:
         reorg = ""
         operators = "|?*."
         i = 0
+
         while (i < len(regex) - 1):
-            actual = regex[i]
-            next_ = regex[i+1]
+            actual, next_ = regex[i], regex[i+1]
 
             if actual == "(":
                 string = self._get_substr(regex, i + 1)
-                subregex: str = "(" + self._reorg(string) + ")"
+                subregex: str = "(" + self._reorg_regex(string) + ")"
                 i += len(subregex)
 
                 if i < len(regex) and regex[i] in operators:

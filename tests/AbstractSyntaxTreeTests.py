@@ -64,23 +64,23 @@ class AbstractSyntaxTreeTests(unittest.TestCase):
 
     def test_reorg(self) -> None:
         expected = "|ba"
-        actual = self.tree._reorg("b|a")
+        actual = self.tree._reorg_regex("b|a")
         self.assertEqual(expected, actual)
 
         expected = ".#.*aa"
-        actual = self.tree._reorg("#.*a.a")
+        actual = self.tree._reorg_regex("#.*a.a")
         self.assertEqual(actual, expected)
 
         expected = ".#.*(|ba)a"
-        actual = self.tree._reorg("#.*(b|a).a")
+        actual = self.tree._reorg_regex("#.*(b|a).a")
         self.assertEqual(actual, expected)
 
         expected = ".#.a(|ba)"
-        actual = self.tree._reorg("#.a.(b|a)")
+        actual = self.tree._reorg_regex("#.a.(b|a)")
         self.assertEqual(actual, expected)
 
         expected = ".#.*(.*(|ba)a)a"
-        actual = self.tree._reorg("#.*(*(b|a).a).a")
+        actual = self.tree._reorg_regex("#.*(*(b|a).a).a")
         self.assertEqual(actual, expected)
         return None
 
