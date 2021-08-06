@@ -89,7 +89,7 @@ class Node:
         if not self.is_leaf():
             if self._value == concat:
                 for pos in self._left_child.get_lastpos():
-                    node[pos].update_followpos(self._left_child.get_firstpos())
+                    node[pos].update_followpos(self._right_child.get_firstpos())
             elif self._value == closure:
                 for pos in self._lastpos:
                     node[pos].update_followpos(self._firstpos)
@@ -134,7 +134,7 @@ class Node:
         return None
 
     def is_leaf(self) -> bool:
-        if (self._left_child and self._right_child):
+        if (self._left_child is None) and (self._right_child is None):
             return True
 
         return False
