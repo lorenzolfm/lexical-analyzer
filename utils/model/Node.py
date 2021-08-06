@@ -19,7 +19,7 @@ class Node:
         self._nullable: bool = self._set_nullable()
         self._firstpos: set = self._set_firstpos()
         self._lastpos: set = self._set_lastpos()
-        self._followpos: Optional[set] = self.set_followpos(leaf_nodes)
+        self._followpos: Optional[set] = self._set_followpos(leaf_nodes)
 
     def get_position(self) -> int:
         return self._position
@@ -85,7 +85,7 @@ class Node:
         else:
             return self._left_child.get_firstpos()
 
-    def set_followpos(self, node: Dict[int, Node]) -> Optional[set]:
+    def _set_followpos(self, node: Dict[int, Node]) -> Optional[set]:
         if not self.is_leaf():
             if self._value == concat:
                 for pos in self._left_child.get_lastpos():
