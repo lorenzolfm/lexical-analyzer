@@ -69,4 +69,9 @@ class RegexUtilsTests(unittest.TestCase):
         expected = "ab.c.ab|?.a.b.c.#."
         actual = setup_regex(regex)
         self.assertEqual(actual, expected)
+
+        regex = "abc(a|b)?abc(c|d)abc"
+        expected = "ab.c.ab|?.a.b.c.cd|.a.b.c.#."
+        actual = setup_regex(regex)
+        self.assertEqual(actual, expected)
         return None
