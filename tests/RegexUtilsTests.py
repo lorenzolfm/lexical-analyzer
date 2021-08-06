@@ -60,4 +60,13 @@ class RegexUtilsTests(unittest.TestCase):
         return None
 
     def test_setup_regex(self) -> None:
+        regex: str = "(a|b)*abb"
+        expected: str = "ab|*a.b.b.#."
+        actual: str = setup_regex(regex)
+        self.assertEqual(actual, expected)
+
+        regex = "abc(a|b)?abc"
+        expected = "ab.c.ab|?.a.b.c.#."
+        actual = setup_regex(regex)
+        self.assertEqual(actual, expected)
         return None
