@@ -12,7 +12,7 @@ class RegexUtilsTests(unittest.TestCase):
 
     def test_add_ending(self) -> None:
         regex: str = "abc"
-        expected: str = "abc.#"
+        expected: str = "abc#."
         actual: str = add_ending(regex)
         self.assertEqual(actual, expected)
         return None
@@ -40,13 +40,6 @@ class RegexUtilsTests(unittest.TestCase):
         self.assertEqual(actual, expected)
         return None
 
-    def test_reverse_regex(self) -> None:
-        regex: str = "ab(c(oi)d)ef(gh)ij"
-        expected: str = "ji(hg)fe(d(io)c)ba"
-        actual: str = reverse_regex(regex)
-        self.assertEqual(actual, expected)
-        return None
-
     def test_insert_concats(self) -> None:
         regex: str = "(a|b)?abcd(a|b)*abcd"
         expected: str = "(a|b)?.a.b.c.d.(a|b)*.a.b.c.d"
@@ -54,31 +47,31 @@ class RegexUtilsTests(unittest.TestCase):
         self.assertEqual(actual, expected)
         return None
 
-    def test_reorg(self) -> None:
-        expected = "|ba"
-        actual = reorg_regex("b|a")
-        self.assertEqual(expected, actual)
-
-        expected = ".#.*aa"
-        actual = reorg_regex("#.*a.a")
+    def test_infix_to_postfix(self) -> None:
+        regex: str = "(a|b)*.a.b.b"
+        expected: str = "ab|*a.b.b."
+        actual = infix_to_postfix(regex)
         self.assertEqual(actual, expected)
 
-        expected = ".#.*(|ba)a"
-        actual = reorg_regex("#.*(b|a).a")
-        self.assertEqual(actual, expected)
-
-        expected = ".#.a(|ba)"
-        actual = reorg_regex("#.a.(b|a)")
-        self.assertEqual(actual, expected)
-
-        expected = ".#.*(.*(|ba)a)a"
-        actual = reorg_regex("#.*(*(b|a).a).a")
+        regex = "a.b.c.(a|b)?.a.b.c"
+        expected = "ab.c.ab|?.a.b.c."
+        actual = infix_to_postfix(regex)
         self.assertEqual(actual, expected)
         return None
 
     def test_setup_regex(self) -> None:
-        regex: str = "a(a(a|b)*)*"
-        expected = ".#.*(.*(|ba)a)a"
+        regex: str = "(a|b)*abb"
+        expected: str = "ab|*a.b.b.#."
+        actual: str = setup_regex(regex)
+        self.assertEqual(actual, expected)
+
+        regex = "abc(a|b)?abc"
+        expected = "ab.c.ab|?.a.b.c.#."
+        actual = setup_regex(regex)
+        self.assertEqual(actual, expected)
+
+        regex = "abc(a|b)?abc(c|d)abc"
+        expected = "ab.c.ab|?.a.b.c.cd|.a.b.c.#."
         actual = setup_regex(regex)
         self.assertEqual(actual, expected)
         return None

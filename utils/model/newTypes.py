@@ -1,6 +1,5 @@
-from typing import TypeVar, Dict
+from typing import Dict
 
-T = TypeVar("T")
 concat: str = "."
 closure: str = "*"
 union: str = "|"
