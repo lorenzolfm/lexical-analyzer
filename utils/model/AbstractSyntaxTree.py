@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from .regex_utils import setup_regex, operators
+from .regex_utils import setup_regex, operators, _infix_to_postfix
 from .newTypes import closure
 from .Node import Node
 
@@ -13,6 +13,8 @@ class AbstractSyntaxTree:
 
     def _create_syntax_tree_from_regex(self, regex: str) -> None:
         postfix_regex = setup_regex(regex)
+        print(postfix_regex)
+        print(_infix_to_postfix("(a|b)*.a.b.b"))
         stack: List = []
         for char in postfix_regex:
             if char not in operators:

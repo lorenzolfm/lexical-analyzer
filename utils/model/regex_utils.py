@@ -1,6 +1,6 @@
 from typing import Tuple, List
 
-from .newTypes import operators
+from .newTypes import operators, precedence, closure
 
 
 # Testada
@@ -20,6 +20,39 @@ def setup_regex(regex: str) -> str:
     output = output[::-1]
 
     return output
+
+
+def _infix_to_postfix(infix: str) -> str:
+    postfix: str = ""
+    stack: List[chr] = []
+    # FIXME:
+    for char in infix:
+        if char.isalnum():
+            postfix += char
+        elif char == "(":
+            stack.append(char)
+        elif char == ")":
+            while stack[-1] != "(":
+                postfix += stack.pop()
+
+            stack.pop()
+        elif char == closure:
+            stack.append(char)
+
+        elif (stack) and ((stack[-1] == "(") or (precedence[char] > precedence[stack[-1]])):
+            stack.append(char)
+
+        else:
+            while stack and (precedence[char] <= precedence[stack[-1]]):
+                postfix += stack.pop()
+
+            postfix += char
+
+    while stack:
+        postfix += stack.pop()
+
+    return postfix + "#."
+
 
 # Testada
 def remove_white_spaces(regex: str) -> str:
