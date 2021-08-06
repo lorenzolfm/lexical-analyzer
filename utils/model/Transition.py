@@ -2,7 +2,7 @@ from .State import State
 
 
 class Transition:
-    def __init__(self, origin_state: State, symbol: str, destiny_state: State):
+    def __init__(self, origin_state: State, symbol: str, destiny_state: State) -> None:
         self._origin_state = origin_state
         self._symbol = symbol
         self._destiny_state = destiny_state
