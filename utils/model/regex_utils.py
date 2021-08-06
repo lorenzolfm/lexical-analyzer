@@ -25,7 +25,7 @@ def setup_regex(regex: str) -> str:
 def _infix_to_postfix(infix: str) -> str:
     postfix: str = ""
     stack: List[chr] = []
-    # FIXME:
+    # TODO: testar.
     for char in infix:
         if char.isalnum():
             postfix += char
@@ -37,13 +37,16 @@ def _infix_to_postfix(infix: str) -> str:
 
             stack.pop()
         elif char == closure:
+            postfix += char
+
+        elif not stack:
             stack.append(char)
 
-        elif (stack) and ((stack[-1] == "(") or (precedence[char] > precedence[stack[-1]])):
+        elif (stack[-1] == "(") or (precedence[char] > precedence[stack[-1]]):
             stack.append(char)
 
         else:
-            while stack and (precedence[char] <= precedence[stack[-1]]):
+            while stack and (precedence[char] < precedence[stack[-1]]):
                 postfix += stack.pop()
 
             postfix += char
