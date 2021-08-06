@@ -1,10 +1,11 @@
 from typing import TypeVar, Dict
 
 T = TypeVar("T")
-concat: chr = "."
-closure: chr = "*"
-union: chr = "|"
-optional: chr = "?"
+concat: str = "."
+closure: str = "*"
+union: str = "|"
+optional: str = "?"
+epsilon: str = "&"
 
 operators = [concat, closure, union, optional]
-precedence: Dict[chr, int] = {union: 0, concat: 1, closure: 2, optional: 2}
+precedence: Dict[str, int] = {union: 0, concat: 1, closure: 2, optional: 2}
