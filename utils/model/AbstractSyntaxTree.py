@@ -42,22 +42,26 @@ class AbstractSyntaxTree:
         return None
 
     def _create_finite_automata(self, leaf_nodes: Dict[int, Node], symbols: Set[str]) -> None:
-        symbols = symbols - {"#"}
+        # Method setup
+        symbols = symbols - {"#", "&"}
         final_state_flag = max(list(leaf_nodes.keys()))
         state_id: int = 65
-        stack: List[Set[int]] = [self._root.get_firstpos()]
-        convert_state_to_set: Dict[State, Set[int]] = {}
+        first_set: Set[int] = self._root.get_firstpos()
+        stack: List[Set[int]] = [first_set]
         marked_states: List[Set[int]] = []
-        states: Set[State] = set()
-        final_states: Set[State] = set()
+
+        # DFA setup
+        initial_state: State = State(name=chr(state_id), label=str(first_set))
+        states: Set[State] = {initial_state}
+        final_states: Set[State] = {initial_state} if final_state_flag in first_set else set()
         transitions: Set[Transition] = set()
-        initial_state: State = State(name=chr(state_id), label=str(self._root.get_firstpos()))
-        states.add(initial_state)
-        convert_state_to_set[initial_state] = self._root.get_firstpos()
+
+        # Conversion setup
+        convert_state_to_set: Dict[State, Set[int]] = {initial_state: first_set}
         while stack:
             set_of_position_nodes: Set[int] = stack.pop()
             marked_states.append(set_of_position_nodes)
-            for symbol in symbols:
+            for symbol in sorted(symbols):
                 followpos: Set[int] = set()
                 for pos in sorted(set_of_position_nodes):
                     if symbol == leaf_nodes[pos].get_value():
