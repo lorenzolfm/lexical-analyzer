@@ -76,14 +76,14 @@ class Node:
             else:
                 return {self._position}
         elif self._value == union:
-            return (self._left_child.get_firstpos() | self._right_child.get_firstpos())
+            return (self._left_child.get_lastpos() | self._right_child.get_lastpos())
         elif self._value == concat:
             if self._right_child.get_nullable():
-                return (self._left_child.get_firstpos() | self._right_child.get_firstpos())
+                return (self._left_child.get_lastpos() | self._right_child.get_lastpos())
             else:
-                return self._right_child.get_firstpos()
+                return self._right_child.get_lastpos()
         else:
-            return self._left_child.get_firstpos()
+            return self._left_child.get_lastpos()
 
     def _set_followpos(self, node: Dict[int, Node]) -> Optional[set]:
         if not self.is_leaf():

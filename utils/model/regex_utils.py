@@ -1,6 +1,6 @@
 from typing import List
 
-from .newTypes import precedence, closure
+from .newTypes import precedence, closure, epsilon
 
 
 def setup_regex(regex: str) -> str:
@@ -47,7 +47,7 @@ def infix_to_postfix(infix: str) -> str:
     stack: List[str] = []
 
     for char in infix:
-        if char.isalnum():
+        if char.isalnum() or char == epsilon:
             postfix += char
         elif char == "(":
             stack.append(char)

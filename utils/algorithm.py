@@ -5,6 +5,14 @@ from .model.Transition import Transition
 from .model.State import State
 
 
+def get_key_by_value(dict_: dict, data):
+    for key, value in dict_.items():
+        if value == data:
+            return key
+
+    return None
+
+
 def automata_union(*automatas: FiniteAutomata) -> FiniteAutomata:
     initial_state: State = State("S")
     states: Set[State] = {initial_state}

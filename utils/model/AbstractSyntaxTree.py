@@ -1,7 +1,11 @@
-from typing import List, Dict
+from typing import List, Dict, Set
 
-from .regex_utils import setup_regex
 from .newTypes import closure, optional, operators
+from .FiniteAutomata import FiniteAutomata
+from ..algorithm import get_key_by_value
+from .regex_utils import setup_regex
+from .Transition import Transition
+from .State import State
 from .Node import Node
 
 
@@ -11,6 +15,7 @@ class AbstractSyntaxTree:
 
     def _create_syntax_tree_from_regex(self, regex: str) -> None:
         postfix_regex = setup_regex(regex)
+        symbols: Set[str] = set()
         leaf_nodes: Dict[int, Node] = {}
         position: int = 1
         stack: List = []
@@ -20,6 +25,7 @@ class AbstractSyntaxTree:
                 stack.append(tree)
                 leaf_nodes[position] = tree
                 position += 1
+                symbols |= {char}
             elif (char != closure) and (char != optional):
                 op_1, op_2 = stack.pop(), stack.pop()
                 tree: Node = Node(value=char, leaf_nodes=leaf_nodes, left_child=op_2, right_child=op_1)
@@ -31,6 +37,62 @@ class AbstractSyntaxTree:
 
         self._root: Node = stack.pop()
         self._size: int = len(postfix_regex)
+        self._create_finite_automata(leaf_nodes, symbols)
+
+        return None
+
+    def _create_finite_automata(self, leaf_nodes: Dict[int, Node], symbols: Set[str]) -> None:
+        symbols = symbols - {"#"}
+        final_state_flag = max(list(leaf_nodes.keys()))
+        state_id: int = 65
+        stack: List[Set[int]] = [self._root.get_firstpos()]
+        convert_state_to_set: Dict[State, Set[int]] = {}
+        marked_states: List[Set[int]] = []
+        states: Set[State] = set()
+        final_states: Set[State] = set()
+        transitions: Set[Transition] = set()
+        initial_state: State = State(name=chr(state_id), label=str(self._root.get_firstpos()))
+        states.add(initial_state)
+        convert_state_to_set[initial_state] = self._root.get_firstpos()
+        while stack:
+            set_of_position_nodes: Set[int] = stack.pop()
+            marked_states.append(set_of_position_nodes)
+            for symbol in symbols:
+                followpos: Set[int] = set()
+                for pos in sorted(set_of_position_nodes):
+                    if symbol == leaf_nodes[pos].get_value():
+                        followpos |= leaf_nodes[pos].get_followpos()
+
+                if followpos:
+                    origin_state = get_key_by_value(convert_state_to_set, set_of_position_nodes)
+                    if origin_state is None:
+                        state_id += 1
+                        origin_state = State(name=chr(state_id), label=str(set_of_position_nodes))
+                        convert_state_to_set[origin_state] = set_of_position_nodes
+                        states.add(origin_state)
+                        if final_state_flag in set_of_position_nodes:
+                            final_states.add(origin_state)
+
+                    destiny_state = get_key_by_value(convert_state_to_set, followpos)
+                    if destiny_state is None:
+                        state_id += 1
+                        destiny_state: State = State(name=chr(state_id), label=str(followpos))
+                        convert_state_to_set[destiny_state] = followpos
+                        states.add(destiny_state)
+                        if final_state_flag in followpos:
+                            final_states.add(destiny_state)
+
+                    transitions.add(Transition(origin_state, symbol, destiny_state))
+
+                    if (followpos not in marked_states):
+                        stack.append(followpos)
+
+        self._finite_automata: FiniteAutomata = FiniteAutomata(states=states,
+                                                               initial_state=initial_state,
+                                                               final_states=final_states,
+                                                               transitions=transitions,
+                                                               symbols=symbols)
+
         return None
 
     def get_root(self):
