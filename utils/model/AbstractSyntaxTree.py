@@ -1,7 +1,7 @@
 from typing import List, Dict
 
-from .regex_utils import setup_regex, operators
-from .newTypes import closure, optional
+from .regex_utils import setup_regex
+from .newTypes import closure, optional, operators
 from .Node import Node
 
 
