@@ -1,6 +1,6 @@
 from typing import List
 
-from .newTypes import operators, precedence, closure
+from .newTypes import precedence, closure
 
 
 def setup_regex(regex: str) -> str:
@@ -10,8 +10,10 @@ def setup_regex(regex: str) -> str:
     regex = add_ending(regex)
     return regex
 
+
 def remove_white_spaces(regex: str) -> str:
     return regex.replace(" ", "")
+
 
 def insert_concats(regex: str) -> str:
     n_concat: int = 0
@@ -27,14 +29,18 @@ def insert_concats(regex: str) -> str:
 
     return new_regex
 
+
 def needs_concat_symbol(previous: str, current: str) -> bool:
     return (previous.isalnum() or previous in "*?)") and (current.isalnum() or current == "(")
+
 
 def add_concat_symbol_at_index(regex: str, index: int) -> str:
     return regex[:index] + "." + regex[index:]
 
+
 def add_ending(regex: str) -> str:
     return regex + "#."
+
 
 def infix_to_postfix(infix: str) -> str:
     postfix: str = ""
