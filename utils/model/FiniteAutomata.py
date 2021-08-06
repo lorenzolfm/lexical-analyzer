@@ -11,7 +11,8 @@ class FiniteAutomata:
                  symbols: Set[str],
                  transitions: Set[Transition],
                  initial_state: State,
-                 final_states: Set[State]):
+                 final_states: Set[State]
+                 ) -> None:
         self._states: Set[State] = states
         self._symbols: Set[str] = symbols
         self._transitions: Set[Transition] = transitions
@@ -32,30 +33,6 @@ class FiniteAutomata:
 
     def get_final_states(self) -> Set[State]:
         return self._final_states
-
-    def __repr__(self):
-        """
-        estados | a | b |
-        -----------------
-            A   | B | A |
-            B   | B | B |
-        """
-
-        string = "\u03B4|"
-        for symbol in sorted(self._symbols):
-            string += f"{symbol}|"
-        string += "\n"
-        for state in sorted(self._states, key=State.get_name):
-            string += f"{state}|"
-            for symbol in sorted(self._symbols):
-                transition = self._get_transition(state, symbol)
-                if transition:
-                    string += f"{transition.get_destiny_state()}|"
-                else:
-                    string += "-|"
-
-            string += "\n"
-        return string
 
     # TODO: organizar melhor o código.
     def determinization(self) -> None:
@@ -92,7 +69,7 @@ class FiniteAutomata:
                 self._initial_state = new_state
 
         for transition in new_transitions:
-            transitions.add(Transition(transition[0], transition[1], transition[2]))
+            transitions.add(Transition(transition[0], transition[1], transition[2]))    # noqa
 
         self._transitions = transitions
         self._final_states = final_states
@@ -166,3 +143,27 @@ class FiniteAutomata:
                 return transition
 
         return None
+
+    def __repr__(self):
+        """
+        estados | a | b |
+        -----------------
+            A   | B | A |
+            B   | B | B |
+        """
+
+        string = "\u03B4|"
+        for symbol in sorted(self._symbols):
+            string += f"{symbol}|"
+        string += "\n"
+        for state in sorted(self._states, key=State.get_name):
+            string += f"{state}|"
+            for symbol in sorted(self._symbols):
+                transition = self._get_transition(state, symbol)
+                if transition:
+                    string += f"{transition.get_destiny_state()}|"
+                else:
+                    string += "-|"
+
+            string += "\n"
+        return string
