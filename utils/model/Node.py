@@ -1,23 +1,25 @@
 from __future__ import annotations
-from typing import List, Optional
+from typing import List, Optional, Dict, Set
 
 from .newTypes import concat, closure, union, epsilon
 
 
 class Node:
     def __init__(self,
-                 value: str = "",
+                 value: str,
+                 leaf_nodes: Dict[int, Node],
                  left_child: Optional[Node] = None,
-                 right_child: Optional[Node] = None
+                 right_child: Optional[Node] = None,
+                 position: Optional[int] = None,
                  ) -> None:
         self._value = value
         self._left_child: Optional[Node] = left_child
         self._right_child: Optional[Node] = right_child
-        self._position: int = 0
+        self._position: Optional[int] = position
         self._nullable: bool = self._set_nullable()
         self._firstpos: set = self._set_firstpos()
         self._lastpos: set = self._set_lastpos()
-        self._followpos: set = self._set_followpos()
+        self._followpos: Optional[set] = self.set_followpos(leaf_nodes)
 
     def get_position(self) -> int:
         return self._position
@@ -83,8 +85,22 @@ class Node:
         else:
             return self._left_child.get_firstpos()
 
-    def _set_followpos(self) -> set:
+    def set_followpos(self, node: Dict[int, Node]) -> Optional[set]:
+        if not self.is_leaf():
+            if self._value == concat:
+                for pos in self._left_child.get_lastpos():
+                    node[pos].update_followpos(self._left_child.get_firstpos())
+            elif self._value == closure:
+                for pos in self._lastpos:
+                    node[pos].update_followpos(self._firstpos)
+
+            return None
+
         return set()
+
+    def update_followpos(self, followpos: Set[int]) -> None:
+        self._followpos |= followpos
+        return None
 
     def get_value(self) -> str:
         return self._value
