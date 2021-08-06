@@ -1,5 +1,5 @@
 class State:
-    def __init__(self, name: str, label: str = ""):
+    def __init__(self, name: str, label: str = "") -> None:
         self._name = name
         self._label = label
 
