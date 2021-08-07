@@ -66,7 +66,7 @@ class AbstractSyntaxTree:
                 for pos in sorted(set_of_position_nodes):
                     if symbol == leaf_nodes[pos].get_value():
                         followpos |= leaf_nodes[pos].get_followpos()
-                print(set_of_position_nodes, symbol, followpos)
+
                 if followpos:
                     origin_state = get_key_by_value(convert_state_to_set, set_of_position_nodes)
                     if origin_state is None:
