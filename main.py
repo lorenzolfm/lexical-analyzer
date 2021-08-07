@@ -12,6 +12,6 @@ if __name__ == "__main__":
     # tree = AbstractSyntaxTree("(a|b)*abb")
     # tree = AbstractSyntaxTree("a(a|b)*a")
     # tree = AbstractSyntaxTree("aa*(bb*aa*b)*")
-    tree = AbstractSyntaxTree("(&|b)(ab)*(&|a)")    # FIXME: duplicando transições - WTF
+    tree = AbstractSyntaxTree("(&|b)(ab)*(&|a)")
     # tree = AbstractSyntaxTree("((a|b)|&)(a|b)*aa")
     print(tree.in_order())
