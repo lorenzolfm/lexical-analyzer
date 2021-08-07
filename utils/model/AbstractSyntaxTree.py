@@ -1,6 +1,6 @@
 from typing import List, Dict, Set
 
-from .newTypes import closure, optional, operators
+from .newTypes import closure, optional, operators, epsilon, end_of_sentence
 from .FiniteAutomata import FiniteAutomata
 from ..algorithm import get_key_by_value
 from .regex_utils import setup_regex
@@ -37,14 +37,13 @@ class AbstractSyntaxTree:
 
         self._root: Node = stack.pop()
         self._size: int = len(postfix_regex)
-        self._create_finite_automata(leaf_nodes, symbols)
+        self._create_finite_automata(leaf_nodes, symbols - {end_of_sentence, epsilon})
 
         return None
 
     def _create_finite_automata(self, leaf_nodes: Dict[int, Node], symbols: Set[str]) -> None:
         # Method setup
-        symbols = symbols - {"#", "&"}
-        final_state_flag = max(list(leaf_nodes.keys()))
+        final_state_flag: int = max(list(leaf_nodes.keys()))
         state_id: int = 65
         first_set: Set[int] = self._root.get_firstpos()
         stack: List[Set[int]] = [first_set]
@@ -98,6 +97,9 @@ class AbstractSyntaxTree:
                                                                symbols=symbols)
 
         return None
+
+    def get_finite_automata(self) -> FiniteAutomata:
+        return self._finite_automata
 
     def get_root(self):
         return self._root
