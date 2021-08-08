@@ -22,7 +22,7 @@ algoritmos:
 #### Fluxo de Execução
 
 - A interface **de projeto** deve permitir a inclusão de expressões regulares para todos 
-  os padrões de tokes.
+  os padrões de tokens.
 - Para cada ER deve ser gerado o AFD correspondente.
 - Os AFD devem ser unidos.
 - O AFND resultante deve ser determinizado gerando a tabela de análise léxica.
