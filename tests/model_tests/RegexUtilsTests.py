@@ -22,10 +22,14 @@ class RegexUtilsTests(unittest.TestCase):
         self.assertTrue(needs_concat_symbol(")", "b"))
         self.assertTrue(needs_concat_symbol("*", "a"))
         self.assertTrue(needs_concat_symbol("a", "("))
+        self.assertTrue(needs_concat_symbol("?", "a"))
+
         self.assertFalse(needs_concat_symbol("|", "a"))
         self.assertFalse(needs_concat_symbol(" ", "a"))
         self.assertFalse(needs_concat_symbol("a", "|"))
         self.assertFalse(needs_concat_symbol(")", "*"))
+        self.assertFalse(needs_concat_symbol(")", "?"))
+        self.assertFalse(needs_concat_symbol("b", ")"))
         return None
 
     def test_add_concat_symbol_at_index(self) -> None:
