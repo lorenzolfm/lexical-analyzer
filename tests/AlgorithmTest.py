@@ -6,6 +6,7 @@ from utils.model.State import State
 
 from utils.algorithm import automata_union
 
+
 class AlgorithmTest(unittest.TestCase):
     def test_automata_union(self) -> None:
         q0 = State("q0")
