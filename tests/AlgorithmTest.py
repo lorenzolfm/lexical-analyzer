@@ -58,8 +58,12 @@ class AlgorithmTest(unittest.TestCase):
             final_states = final_states
         )
 
-        actual = automata_union(fa_0, fa_1)
+        actual: FiniteAutomata = automata_union(fa_0, fa_1)
         self.assertEqual(actual.get_initial_state().get_name(), 'S')
-        self.assertEqual(actual.get_final_states(), {q1, q4})
+        self.assertEqual(actual.get_final_states(), fa_0.get_final_states() | fa_1.get_final_states())
+        self.assertEqual(actual.get_states(), fa_0.get_states() | fa_1.get_states()
+                         | {actual.get_initial_state()})
+        self.assertEqual(actual.get_symbols(), fa_0.get_symbols() | fa_1.get_symbols() | {"&"})
         # TODO: testar transições
+
         return None
