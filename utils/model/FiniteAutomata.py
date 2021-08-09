@@ -144,6 +144,22 @@ class FiniteAutomata:
 
         return None
 
+    def get_transition(self, origin: State, symbol: str, destiny: State) -> Optional[Transition]:
+        for transition in self._transitions:
+            if (origin == transition.get_origin_state()) and (symbol == transition.get_symbol()) \
+                    and destiny == transition.get_destiny_state():
+                return transition
+
+        return None
+
+    def contains_transition(self, origin: State, symbol: str, destiny: State) -> bool:
+        for transition in self._transitions:
+            if (origin == transition.get_origin_state()) and (symbol == transition.get_symbol()) \
+                    and destiny == transition.get_destiny_state():
+                return True
+
+        return False
+
     def __repr__(self):
         """
         estados | a | b |
