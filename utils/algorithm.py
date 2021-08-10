@@ -1,4 +1,4 @@
-from typing import Set
+from typing import Set, List
 
 from .model.FiniteAutomata import FiniteAutomata
 from .model.Transition import Transition
@@ -13,7 +13,7 @@ def get_key_by_value(dict_: dict, data):
     return None
 
 
-def automata_union(*automatas: FiniteAutomata) -> FiniteAutomata:
+def automata_union(automatas: List[FiniteAutomata]) -> FiniteAutomata:
     initial_state: State = State("S")
     states: Set[State] = {initial_state}
     symbols: Set[str] = set()

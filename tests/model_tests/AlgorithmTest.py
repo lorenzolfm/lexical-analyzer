@@ -63,7 +63,7 @@ class AlgorithmTest(unittest.TestCase):
             final_states = final_states_1
         )
 
-        actual: FiniteAutomata = automata_union(fa_0, fa_1)
+        actual: FiniteAutomata = automata_union([fa_0, fa_1])
         initial_state: State = actual.get_initial_state()
         self.assertEqual(initial_state.get_name(), 'S')
         self.assertEqual(actual.get_final_states(), final_states_0 | final_states_1)
