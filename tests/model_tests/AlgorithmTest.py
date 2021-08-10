@@ -2,6 +2,7 @@ import unittest
 
 from utils.model.FiniteAutomata import FiniteAutomata
 from utils.model.Transition import Transition
+from utils.model.AbstractSyntaxTree import AbstractSyntaxTree
 from utils.model.State import State
 
 from utils.algorithm import automata_union
@@ -74,5 +75,25 @@ class AlgorithmTest(unittest.TestCase):
         transition_0 = actual.get_transition(initial_state, "&", initial_state_0)
         transition_1 = actual.get_transition(initial_state, "&", initial_state_1)
         self.assertEqual(actual.get_transitions(), {transition_0, transition_1} | transitions_0 | transitions_1)
+
+        return None
+
+    def test_union_again(self) -> None:
+        tree_0 = AbstractSyntaxTree("ab")
+        tree_1 = AbstractSyntaxTree("c")
+        fa_0 = tree_0.get_finite_automata()
+        fa_1 = tree_1.get_finite_automata()
+        print(fa_0)
+        print(fa_1)
+        automatas = [
+            fa_0,
+            fa_1
+        ]
+        fa = automata_union(automatas)
+        print(fa)
+        print(fa.get_transitions())
+
+        fa.determinization()
+        print(fa)
 
         return None

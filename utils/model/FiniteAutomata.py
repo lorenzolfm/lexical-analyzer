@@ -59,7 +59,6 @@ class FiniteAutomata:
         self._states: Set[State] = set(conversion_states.keys())
         new_final_states = self._get_new_final_states(list(conversion_states.values()))
 
-        print(conversion_states)
         transitions: Set[Transition] = set()
         final_states: Set[State] = set()
         new_initial_states: Set[State] = e_closure[self._initial_state]

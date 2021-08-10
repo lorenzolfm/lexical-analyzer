@@ -29,9 +29,10 @@ class Controller:
             regular_definition = list(response["inputs"]["rd_entry"].split())
             if regular_definition:
                 regex = regular_definition[-1]
+                print(regex)
                 self._regexs.append(regex)
         except:
-            print("algo deu errado")
+            print("Algo deu errado")
         else:
             pass
         return None
@@ -44,18 +45,20 @@ class Controller:
                 automatas.append(tree.get_finite_automata())
             automata = automata_union(automatas)
             automata.determinization()
-            print(automata)
+            self._automata = automata
+            print(self._automata)
         except:
-            pass
+            print("Algo deu errado")
         else:
             pass
         return None
 
     def _handle_source_code_input(self, response: Dict) -> None:
         try:
-            print(response["text_entries"]["source_code_input"])
+            source_code = list(response["text_entries"]["source_code_input"].split())
         except:
-            pass
+            print("Algo deu errado")
         else:
-            pass
+            for lexeme in source_code:
+                print(f"Lexema: {lexeme}, Accept: {self._automata.eval_lexeme(lexeme)}")
         return None

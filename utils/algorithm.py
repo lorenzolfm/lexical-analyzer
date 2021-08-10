@@ -14,6 +14,9 @@ def get_key_by_value(dict_: dict, data):
 
 
 def automata_union(automatas: List[FiniteAutomata]) -> FiniteAutomata:
+    if len(automatas) == 1:
+        return automatas[0]
+
     initial_state: State = State("S")
     states: Set[State] = {initial_state}
     symbols: Set[str] = set()

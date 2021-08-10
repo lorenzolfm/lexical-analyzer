@@ -8,6 +8,7 @@ from .Transition import Transition
 from .State import State
 from .Node import Node
 
+state_id: int = 65
 
 class AbstractSyntaxTree:
     def __init__(self, regex: str) -> None:
@@ -43,14 +44,16 @@ class AbstractSyntaxTree:
 
     def _create_finite_automata(self, leaf_nodes: Dict[int, Node], symbols: Set[str]) -> None:
         # Method setup
+        global state_id
         final_state_flag: int = max(list(leaf_nodes.keys()))
-        state_id: int = 65
+        # state_id: int = 65
         first_set: Set[int] = self._root.get_firstpos()
         stack: List[Set[int]] = [first_set]
         marked_states: List[Set[int]] = []
 
         # DFA setup
         initial_state: State = State(name=chr(state_id), label=str(first_set))
+        state_id += 1
         states: Set[State] = {initial_state}
         final_states: Set[State] = {initial_state} if final_state_flag in first_set else set()
         transitions: Set[Transition] = set()
@@ -69,8 +72,8 @@ class AbstractSyntaxTree:
                 if followpos:
                     origin_state = get_key_by_value(convert_state_to_set, set_of_position_nodes)
                     if origin_state is None:
-                        state_id += 1
                         origin_state = State(name=chr(state_id), label=str(set_of_position_nodes))
+                        state_id += 1
                         convert_state_to_set[origin_state] = set_of_position_nodes
                         states.add(origin_state)
                         if final_state_flag in set_of_position_nodes:
@@ -78,8 +81,8 @@ class AbstractSyntaxTree:
 
                     destiny_state = get_key_by_value(convert_state_to_set, followpos)
                     if destiny_state is None:
-                        state_id += 1
                         destiny_state: State = State(name=chr(state_id), label=str(followpos))
+                        state_id += 1
                         convert_state_to_set[destiny_state] = followpos
                         states.add(destiny_state)
                         if final_state_flag in followpos:
