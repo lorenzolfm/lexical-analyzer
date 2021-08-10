@@ -2,6 +2,7 @@ import unittest
 
 from utils.model.regex_utils import *
 
+
 class RegexUtilsTests(unittest.TestCase):
     def test_remove_whitespaces(self) -> None:
         regex: str = "a b c d "
@@ -78,4 +79,27 @@ class RegexUtilsTests(unittest.TestCase):
         expected = "ab.c.ab|?.a.b.c.cd|.a.b.c.#."
         actual = setup_regex(regex)
         self.assertEqual(actual, expected)
+        return None
+
+    def test_replace_optional(self) -> None:
+        regex: str = "a?"
+        expected: str = "(a|&)"
+        actual: str = replace_optional(regex)
+        self.assertEqual(actual, expected)
+
+        regex = "(a(a|b))?"
+        expected = "((a(a|b))|&)"
+        actual = replace_optional(regex)
+        self.assertEqual(actual, expected)
+
+        regex = "(a|b)?(a|b)*aa"
+        expected = "((a|b)|&)(a|b)*aa"
+        actual = replace_optional(regex)
+        self.assertEqual(actual, expected)
+
+        regex = "(a|b)?abb"
+        expected = "((a|b)|&)abb"
+        actual = replace_optional(regex)
+        self.assertEqual(actual, expected)
+
         return None

@@ -11,6 +11,37 @@ def setup_regex(regex: str) -> str:
     return regex
 
 
+def replace_optional(regex: str) -> str:
+    index: int = regex.find("?")
+    # print(index)
+    stack: List[str] = []
+    while index != -1:
+        char = regex[index - 1]
+        if char == ")":
+            stack.append(")")
+            new_regex = ")?"
+            index -= 1
+            while stack:
+                char = regex[index - 1]
+                new_regex = char + new_regex
+                if char == "(":
+                    stack.pop()
+                elif char == ")":
+                    stack.append(char)
+
+                index -= 1
+        else:
+            new_regex = char + "?"
+
+        # print(new_regex, new_regex[:-1])
+        regex = regex.replace(new_regex, "(" + new_regex[:-1] + "|&)")
+        # print(regex)
+        index = regex.find("?")
+        # print(index)
+
+    return regex
+
+
 def remove_white_spaces(regex: str) -> str:
     return regex.replace(" ", "")
 
