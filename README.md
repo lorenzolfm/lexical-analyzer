@@ -27,7 +27,7 @@ algoritmos:
 - Os AFD devem ser unidos.
 - O AFND resultante deve ser determinizado gerando a tabela de análise léxica.
 - A interface **de execução** deve permitir a entrada de um texto fonte.
-- O texto fonte será analisado e deve gerar um arquivo de saída com todos os tokes
+- O texto fonte será analisado e deve gerar um arquivo de saída com todos os tokens
   encontrados.
   
 ---

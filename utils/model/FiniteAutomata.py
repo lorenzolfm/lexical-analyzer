@@ -34,6 +34,17 @@ class FiniteAutomata:
     def get_final_states(self) -> Set[State]:
         return self._final_states
 
+    def eval_lexeme(self, lexeme: str) -> bool:
+        actual_state = self._initial_state
+        for char in lexeme:
+            transition = self._get_transition(actual_state, char)
+            actual_state = transition.get_destiny_state()
+
+        if actual_state in self._final_states:
+            return True
+
+        return False
+
     # TODO: organizar melhor o código.
     def determinization(self) -> None:
         if ("&" not in self._symbols):
