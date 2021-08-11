@@ -7,3 +7,6 @@ class Token:
 
     def get_name(self) -> str:
         return self._name
+
+    def __repr__(self) -> str:
+        return self._name

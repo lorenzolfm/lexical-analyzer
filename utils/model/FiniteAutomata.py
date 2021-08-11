@@ -60,6 +60,8 @@ class FiniteAutomata:
                 states_names.append(origin_state_name)
                 self._states.add(state)
                 if self._is_new_final_state(origin_state_name):
+                    token = list(origin_state_name)[0].get_token()
+                    state.set_token(token)
                     new_final_states.add(state)
 
             if destiny_state_name not in states_names:

@@ -10,13 +10,17 @@ class IntegrationTests(unittest.TestCase):
         id_ = Token("<ID>")
         relop = Token("<RELOP>")
         tree_0 = AbstractSyntaxTree("(a|b|c|d|e|f)*", id_)
-        tree_1 = AbstractSyntaxTree("<=|>=|==|!=|>|<", relop)
+        tree_1 = AbstractSyntaxTree("0|1", relop)
 
         auto_list = [tree_0.get_finite_automata(), tree_1.get_finite_automata()]
         fa = automata_union(auto_list)
         fa.determinization()
 
         expected = id_
-        actual = fa.eval_lexeme("abc")
+        actual = fa.eval_lexeme("acbde")
         self.assertEqual(actual, expected)
+
+        # expected = relop
+        # actual = fa.eval_lexeme("1")
+        # self.assertEqual(actual, expected)
         return None

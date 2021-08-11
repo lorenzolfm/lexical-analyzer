@@ -14,7 +14,7 @@ state_id: int = 65
 class AbstractSyntaxTree:
     def __init__(self, regex: str, token: Token) -> None:
         self._create_syntax_tree_from_regex(regex)
-        self._set_token_for_final_states(regex)
+        self._set_token_for_final_states(token)
 
     def _create_syntax_tree_from_regex(self, regex: str) -> None:
         postfix_regex = setup_regex(regex)

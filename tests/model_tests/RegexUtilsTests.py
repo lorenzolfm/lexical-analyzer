@@ -80,6 +80,11 @@ class RegexUtilsTests(unittest.TestCase):
         expected = "ab.c.ab|?.a.b.c.cd|.a.b.c.#."
         actual = setup_regex(regex)
         self.assertEqual(actual, expected)
+
+        regex = "<=|>=|==|!=|>|<"
+        expected = "<=.>=.|==.|!=.|>|<|#."
+        actual = setup_regex(regex)
+        self.assertEqual(actual, expected)
         return None
 
     def test_replace_optional(self) -> None:
