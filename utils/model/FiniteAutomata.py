@@ -5,6 +5,7 @@ from .Transition import Transition
 from .State import State
 
 
+# TODO: refatorar métodos
 class FiniteAutomata:
     def __init__(self,
                  states: Set[State],
@@ -45,6 +46,44 @@ class FiniteAutomata:
 
         return False
 
+    def _set_new_states(self, list_of_new_transitions: List[List]) -> None:
+        self._states = set()
+        self._transitions = set()
+        new_final_states: Set[State] = set()
+        # self._initial_state
+        # self._final_states = set()
+        states_names: List[Set[State]] = []
+        # new_transitions: Set[Transition] = set()
+        for transition in list_of_new_transitions:
+            origin_state_name: set = transition[0]
+            destiny_state_name: set = transition[2]
+            if origin_state_name not in states_names:
+                state: State = State(name=str(origin_state_name))
+                states_names.append(origin_state_name)
+                self._states.add(state)
+                if self._is_new_final_state(origin_state_name):
+                    new_final_states.add(state)
+
+            if destiny_state_name not in states_names:
+                state: State = State(name=str(destiny_state_name))
+                states_names.append(destiny_state_name)
+                self._states.add(state)
+                if self._is_new_final_state(destiny_state_name):
+                    new_final_states.add(state)
+
+            origin_state: State = self._get_states_by_name(str(origin_state_name))
+            destiny_state: State = self._get_states_by_name(str(destiny_state_name))
+            self._transitions.add(Transition(origin_state, transition[1], destiny_state))
+
+        self._final_states = new_final_states
+
+    def _get_states_by_name(self, name: str) -> Optional[State]:
+        for state in self._states:
+            if state.get_name() == name:
+                return state
+
+        return None
+
     # TODO: organizar melhor o código.
     def determinization(self) -> None:
         if ("&" not in self._symbols):
@@ -55,34 +94,37 @@ class FiniteAutomata:
         new_states: List[Set[State]] = list(e_closure.values())
         self._symbols.remove("&")
         new_transitions = self._get_new_transitions(new_states, e_closure)
-        conversion_states: Dict[State, Set[State]] = self._simplify_states(new_transitions)
-        self._states: Set[State] = set(conversion_states.keys())
-        new_final_states = self._get_new_final_states(list(conversion_states.values()))
+        self._set_new_states(new_transitions)
+        self._initial_state = self._get_states_by_name(str(e_closure[self._initial_state]))
+        # conversion_states: Dict[State, Set[State]] = self._simplify_states(new_transitions)
+        # self._states: Set[State] = set(conversion_states.keys())
+        # new_final_states = self._get_new_final_states(list(conversion_states.values()))
 
-        transitions: Set[Transition] = set()
-        final_states: Set[State] = set()
-        new_initial_states: Set[State] = e_closure[self._initial_state]
+        # transitions: Set[Transition] = set()
+        # final_states: Set[State] = set()
+        # new_initial_states: Set[State] = e_closure[self._initial_state]
+        # new_initial_states: State = State(name=str(e_closure[self._initial_state]))
 
-        for new_state, old_state in conversion_states.items():
-            for state in new_final_states:
-                if state == old_state:
-                    final_states.add(new_state)
+        # for new_state, old_state in conversion_states.items():
+        #     for state in new_final_states:
+        #         if state == old_state:
+        #             final_states.add(new_state)
+        #
+        #     for transition in new_transitions:
+        #         if transition[0] == old_state:
+        #             transition[0] = new_state
+        #
+        #         if transition[2] == old_state:
+        #             transition[2] = new_state
+        #
+        #     if new_initial_states == old_state:
+        #         self._initial_state = new_state
 
-            for transition in new_transitions:
-                if transition[0] == old_state:
-                    transition[0] = new_state
-
-                if transition[2] == old_state:
-                    transition[2] = new_state
-
-            if new_initial_states == old_state:
-                self._initial_state = new_state
-
-        for transition in new_transitions:
-            transitions.add(Transition(transition[0], transition[1], transition[2]))    # noqa
-
-        self._transitions = transitions
-        self._final_states = final_states
+        # for transition in new_transitions:
+        #     transitions.add(Transition(transition[0], transition[1], transition[2]))    # noqa
+        #
+        # self._transitions = transitions
+        # self._final_states = final_states
 
         return None
 
@@ -128,6 +170,13 @@ class FiniteAutomata:
                     new_final_states.append(new_states)
 
         return new_final_states
+
+    def _is_new_final_state(self, set_of_old_states: Set[State]) -> bool:
+        for state in set_of_old_states:
+            if state in self._final_states:
+                return True
+
+        return False
 
     def _get_e_closure(self) -> Dict[State, Set[State]]:
         e_closure: Dict[State, Set[State]] = {state: {state} for state in self._states}

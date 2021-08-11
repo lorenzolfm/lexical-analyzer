@@ -95,5 +95,10 @@ class AlgorithmTest(unittest.TestCase):
 
         fa.determinization()
         print(fa)
+        print(f"states: {fa.get_states()} \n"
+              f"initial_state: {fa.get_initial_state()} \n"
+              f"final_states: {fa.get_final_states()} \n"
+              f"transitions: {fa.get_transitions()} \n"
+              f"symbols: {fa.get_symbols()}")
 
         return None
