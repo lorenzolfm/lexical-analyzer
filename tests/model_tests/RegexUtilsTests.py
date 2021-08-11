@@ -117,4 +117,6 @@ class RegexUtilsTests(unittest.TestCase):
 
         regex = "[a-dB-E]"
         expected = "(a|b|c|d|B|C|D|E)*"
+        actual = convert_regex_syntax(regex)
+        self.assertEqual(actual, expected)
         return None
