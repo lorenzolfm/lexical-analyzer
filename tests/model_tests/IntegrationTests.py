@@ -5,6 +5,7 @@ from utils.model.FiniteAutomata import FiniteAutomata
 from utils.algorithm import automata_union
 from utils.model.Token import Token
 
+
 class IntegrationTests(unittest.TestCase):
     def test_token_recognization(self) -> None:
         id_ = Token("<ID>")
@@ -18,5 +19,5 @@ class IntegrationTests(unittest.TestCase):
 
         expected = id_
         actual = fa.eval_lexeme("abc")
-        self.assertEqual(actual, expected)
+        self.assertEqual(expected, actual)
         return None
