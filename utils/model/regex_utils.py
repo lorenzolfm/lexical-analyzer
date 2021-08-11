@@ -99,7 +99,7 @@ def infix_to_postfix(infix: str) -> str:
         elif (stack[-1] == "(") or (precedence[char] > precedence[stack[-1]]):
             stack.append(char)
         else:
-            while stack and (precedence[char] <= precedence[stack[-1]]):
+            while stack and (stack[-1] != "(") and (precedence[char] <= precedence[stack[-1]]):
                 postfix += stack.pop()
             stack.append(char)
 
