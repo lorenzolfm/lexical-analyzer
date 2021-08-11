@@ -1,6 +1,7 @@
 import unittest
 
 from utils.model.State import State
+from utils.model.Token import Token
 from utils.model.Transition import Transition
 from utils.model.FiniteAutomata import FiniteAutomata
 from utils.model.AbstractSyntaxTree import AbstractSyntaxTree
@@ -168,7 +169,7 @@ class FiniteAutomataTests(unittest.TestCase):
         return None
 
     def test_determinization_again(self) -> None:
-        tree = AbstractSyntaxTree("ab")
+        tree = AbstractSyntaxTree("ab", Token("<TESTE_FDP>"))
         fa = tree.get_finite_automata()
         fa = automata_union([fa])
         fa.determinization()

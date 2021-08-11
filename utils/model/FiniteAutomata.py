@@ -3,7 +3,7 @@ from copy import copy
 
 from .Transition import Transition
 from .State import State
-
+from .Token import Token
 
 class FiniteAutomata:
     def __init__(self,
@@ -34,18 +34,18 @@ class FiniteAutomata:
     def get_final_states(self) -> Set[State]:
         return self._final_states
 
-    def eval_lexeme(self, lexeme: str) -> bool:
+    def eval_lexeme(self, lexeme: str) -> Optional[Token]:
         actual_state = self._initial_state
         for char in lexeme:
             transition = self._get_transition(actual_state, char)
             if not(transition):
-                return False
+                return None
             actual_state = transition.get_destiny_state()
 
         if actual_state in self._final_states:
-            return True
+            return actual_state.get_token()
 
-        return False
+        return None
 
     def _set_new_states(self, list_of_new_transitions: List[Tuple]) -> None:
         self._states = set()

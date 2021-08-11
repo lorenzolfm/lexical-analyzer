@@ -4,6 +4,7 @@ from .newTypes import closure, optional, operators, epsilon, end_of_sentence
 from .FiniteAutomata import FiniteAutomata
 from ..algorithm import get_key_by_value
 from .regex_utils import setup_regex
+from .Token import Token
 from .Transition import Transition
 from .State import State
 from .Node import Node
@@ -11,8 +12,9 @@ from .Node import Node
 state_id: int = 65
 
 class AbstractSyntaxTree:
-    def __init__(self, regex: str) -> None:
+    def __init__(self, regex: str, token: Token) -> None:
         self._create_syntax_tree_from_regex(regex)
+        self._set_token_for_final_states(regex)
 
     def _create_syntax_tree_from_regex(self, regex: str) -> None:
         postfix_regex = setup_regex(regex)
@@ -99,6 +101,11 @@ class AbstractSyntaxTree:
                                                                transitions=transitions,
                                                                symbols=symbols)
 
+        return None
+
+    def _set_token_for_final_states(self, token) -> None:
+        for state in self._finite_automata.get_final_states():
+            state.set_token(token)
         return None
 
     def get_finite_automata(self) -> FiniteAutomata:

@@ -24,6 +24,7 @@ class RegexUtilsTests(unittest.TestCase):
         self.assertTrue(needs_concat_symbol("*", "a"))
         self.assertTrue(needs_concat_symbol("a", "("))
         self.assertTrue(needs_concat_symbol("?", "a"))
+        self.assertTrue(needs_concat_symbol(">", "="))
 
         self.assertFalse(needs_concat_symbol("|", "a"))
         self.assertFalse(needs_concat_symbol(" ", "a"))
