@@ -38,6 +38,8 @@ class FiniteAutomata:
         actual_state = self._initial_state
         for char in lexeme:
             transition = self._get_transition(actual_state, char)
+            if not(transition):
+                return False
             actual_state = transition.get_destiny_state()
 
         if actual_state in self._final_states:
