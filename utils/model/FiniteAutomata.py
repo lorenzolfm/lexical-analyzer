@@ -5,6 +5,7 @@ from .Transition import Transition
 from .State import State
 from .Token import Token
 
+
 class FiniteAutomata:
     def __init__(self,
                  states: Set[State],
@@ -69,6 +70,8 @@ class FiniteAutomata:
                 states_names.append(destiny_state_name)
                 self._states.add(state)
                 if self._is_new_final_state(destiny_state_name):
+                    token = list(destiny_state_name)[0].get_token()
+                    state.set_token(token)
                     new_final_states.add(state)
 
             origin_state: State = self._get_state_by_name(str(origin_state_name))
