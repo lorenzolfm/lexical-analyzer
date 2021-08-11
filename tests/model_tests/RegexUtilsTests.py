@@ -59,9 +59,24 @@ class RegexUtilsTests(unittest.TestCase):
         actual = infix_to_postfix(regex)
         self.assertEqual(actual, expected)
 
+        regex: str = "(a|b)*|a.b.b"
+        expected: str = "ab|*ab.b.|"
+        actual = infix_to_postfix(regex)
+        self.assertEqual(actual, expected)
+
         regex = "a.b.c.(a|b)?.a.b.c"
         expected = "ab.c.ab|?.a.b.c."
         actual = infix_to_postfix(regex)
+        self.assertEqual(actual, expected)
+
+        regex = "a.c|b.c|c.c|d.c|b|a"
+        expected = "ac.bc.|cc.|dc.|b|a|"
+        actual = infix_to_postfix(regex)
+        self.assertEqual(actual, expected)
+
+        regex = "<.=|>.=|=.=|!.=|>|<"
+        expected = "<=.>=.|==.|!=.|>|<|#."
+        actual = setup_regex(regex)
         self.assertEqual(actual, expected)
         return None
 

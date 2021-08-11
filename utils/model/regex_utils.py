@@ -9,6 +9,7 @@ def setup_regex(regex: str) -> str:
     regex = infix_to_postfix(regex)
     regex = add_ending(regex)
     return regex
+    # <=.>=.|==.|!=.|>|<|#.
 
 
 def replace_optional(regex: str) -> str:
@@ -98,9 +99,9 @@ def infix_to_postfix(infix: str) -> str:
         elif (stack[-1] == "(") or (precedence[char] > precedence[stack[-1]]):
             stack.append(char)
         else:
-            while stack and (precedence[char] < precedence[stack[-1]]):
+            while stack and (precedence[char] <= precedence[stack[-1]]):
                 postfix += stack.pop()
-            postfix += char
+            stack.append(char)
 
     while stack:
         postfix += stack.pop()
