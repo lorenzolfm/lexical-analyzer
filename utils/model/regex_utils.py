@@ -106,3 +106,43 @@ def infix_to_postfix(infix: str) -> str:
         postfix += stack.pop()
 
     return postfix
+
+def convert_regex_syntax(regex: str) -> str:
+    regex = regex[1:-1]
+    if regex[0].isalpha():
+        new_regex = convert_alpha_regex(regex)
+    else:
+        new_regex = convert_num_regex(regex)
+
+    new_regex = "(" + new_regex + ")*"
+    return new_regex
+
+def convert_alpha_regex(regex: str) -> str:
+    new_regex: str = ""
+    alpha_list = []
+
+    for i in range(0, len(regex), 3):
+        alpha_list.append([regex[i], regex[i+2]])
+
+    for sublist in alpha_list:
+        begin_char = ord(sublist[0])
+        end_char = ord(sublist[-1])
+
+        for i in range(begin_char, end_char + 1):
+            new_regex += chr(i)
+            new_regex += "|" if i != end_char else ""
+
+        if sublist != alpha_list[-1]:
+            new_regex += "|"
+
+    return new_regex
+
+def convert_num_regex(regex: str) -> str:
+    new_regex: str = ""
+    begin_num = int(regex[0])
+    end_num = int(regex[-1])
+    for i in range(begin_num, end_num + 1):
+        new_regex += str(i)
+        new_regex += "|" if i != end_num else ""
+
+    return new_regex
