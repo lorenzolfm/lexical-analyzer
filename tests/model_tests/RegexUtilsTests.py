@@ -106,17 +106,17 @@ class RegexUtilsTests(unittest.TestCase):
 
     def test_convert_regex_syntax(self) -> None:
         regex: str = "[a-g]"
-        expected: str = "(a|b|c|d|e|f|g)*"
+        expected: str = "(a|b|c|d|e|f|g)"
         actual = convert_regex_syntax(regex)
         self.assertEqual(actual, expected)
 
         regex = "[0-9]"
-        expected = "(0|1|2|3|4|5|6|7|8|9)*"
+        expected = "(0|1|2|3|4|5|6|7|8|9)"
         actual = convert_regex_syntax(regex)
         self.assertEqual(actual, expected)
 
         regex = "[a-dB-E]"
-        expected = "(a|b|c|d|B|C|D|E)*"
+        expected = "(a|b|c|d|B|C|D|E)"
         actual = convert_regex_syntax(regex)
         self.assertEqual(actual, expected)
         return None

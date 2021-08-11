@@ -114,7 +114,7 @@ def convert_regex_syntax(regex: str) -> str:
     else:
         new_regex = convert_num_regex(regex)
 
-    new_regex = "(" + new_regex + ")*"
+    new_regex = "(" + new_regex + ")"
     return new_regex
 
 def convert_alpha_regex(regex: str) -> str:
