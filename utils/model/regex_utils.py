@@ -5,6 +5,7 @@ from .newTypes import precedence, closure, epsilon, operators
 
 def setup_regex(regex: str) -> str:
     regex = remove_white_spaces(regex)
+    regex = replace_optional(regex)
     regex = insert_concats(regex)
     regex = infix_to_postfix(regex)
     regex = add_ending(regex)

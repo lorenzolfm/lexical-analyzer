@@ -17,7 +17,7 @@ algoritmos:
 - [x] Conversão de Expressão Regular para Autômato Finito Determinístico (livro do Aho).
 - [x] União de Autômatos via &epsilon;-transição.
 - [x] Determinização de Autômatos.
-- [ ] Construção da Tabela de Símbolos (incluir palavras reservadas e outras informações pertinentes).
+- [x] Construção da Tabela de Símbolos (incluir palavras reservadas e outras informações pertinentes).
 
 #### Fluxo de Execução
 
