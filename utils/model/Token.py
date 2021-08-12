@@ -9,4 +9,4 @@ class Token:
         return self._name
 
     def __repr__(self) -> str:
-        return self._name
+        return f"<{self._name}>"
