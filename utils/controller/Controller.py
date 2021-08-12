@@ -1,4 +1,3 @@
-# TODO: Gerar arquivo de saída com os tokens encontrados
 from typing import Dict
 from copy import copy
 
