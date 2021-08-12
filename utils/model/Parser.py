@@ -32,6 +32,8 @@ class Parser:
                     end_lexeme -= 1
                     last_token = None
                     last_lexeme = ""
+                else:
+                    begin_ptr = end_lexeme
             else:
                 last_lexeme = lexeme
                 last_token = self._symbol_table[lexeme]
@@ -43,7 +45,5 @@ class Parser:
                 begin_ptr = end_lexeme
                 last_token = None
                 last_lexeme = ""
-
-        # print(self._symbol_table)
 
         return None

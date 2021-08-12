@@ -21,12 +21,13 @@ class ParserTests(unittest.TestCase):
             "+": Token("Mais")
         }
 
-        string = """
-            if(ifood):
-                ifood = ifood + 10
-            else:
-                return 666
-        """
+        # string = """
+        #     if(ifood):
+        #         ifood = ifood + 10
+        #     else:
+        #         return 666
+        # """
+        string = "uma frase grande pra ver se reconhece."
 
         idd = Token("ID")
         regex_idd = "[a-zA-Z]"
