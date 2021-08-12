@@ -4,14 +4,54 @@ from utils.model.Parser import Parser
 from utils.model.AbstractSyntaxTree import AbstractSyntaxTree
 from utils.model.FiniteAutomata import FiniteAutomata
 from utils.model.Token import Token
+from utils.model.regex_utils import convert_regex_syntax
+from utils.algorithm import automata_union
 
 
 class ParserTests(unittest.TestCase):
     def test_parser(self) -> None:
-        string = "ifood"
-        tk: Token = Token("ifood")
-        tree = AbstractSyntaxTree("ifood", tk)
-        fa = tree.get_finite_automata()
-        parser: Parser = Parser(fa, {})
-        parser.new_parser(string)
+        symbol_table = {
+            "if": Token("if"),
+            "else": Token("else"),
+            "(": Token("AbreP"),
+            ")": Token("FechaP"),
+            ":": Token("2pontos"),
+            "return": Token("Retorno"),
+            "=": Token("Igual"),
+            "+": Token("Mais")
+        }
 
+        string = """
+            if(ifood):
+                ifood = ifood + 10
+            else:
+                return 666
+        """
+
+        idd = Token("ID")
+        regex_idd = "[a-zA-Z]"
+        regex_idd = convert_regex_syntax(regex_idd)
+        regex_idd += "*"
+
+        dig =  Token("DIGITO")
+        regex_dig = "[0-9]"
+        regex_dig = convert_regex_syntax(regex_dig)
+        regex_dig += "*"
+
+        input_list = list(string.split())
+
+        tree_idd = AbstractSyntaxTree(regex_idd, idd)
+        tree_dig = AbstractSyntaxTree(regex_dig, dig)
+        automatas = [
+            tree_idd.get_finite_automata(),
+            tree_dig.get_finite_automata()
+        ]
+        fa = automata_union(automatas)
+        fa.determinization()
+        parser = Parser(fa, symbol_table)
+
+        for string in input_list:
+            parser.parse(string)
+
+        print(parser._symbol_table)
+        return None
