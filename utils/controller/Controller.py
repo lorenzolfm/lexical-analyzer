@@ -95,6 +95,11 @@ class Controller:
             for word in keywords:
                 self._symbol_table[word] = Token(name=word)
 
+            self._view.clear_text(idd="symbol_table")
+
+            for lexeme, token in self._symbol_table.items():
+                self._view.insert_text(idd="symbol_table", text=f"{lexeme}, {token}")
+
         return None
 
     def _log(self, msg: str) -> None:
