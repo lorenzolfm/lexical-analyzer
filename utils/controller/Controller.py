@@ -4,6 +4,7 @@ from ..view.View import View
 from ..view.Form import Form
 from ..model.AbstractSyntaxTree import AbstractSyntaxTree
 from ..model.FiniteAutomata import FiniteAutomata
+from ..model.regex_utils import convert_regex_syntax
 from ..algorithm import automata_union
 from ..model.Token import Token
 from ..model.Parser import Parser
@@ -32,6 +33,8 @@ class Controller:
             regular_definition = list(response["inputs"]["rd_entry"].split())
             name: str = regular_definition[0]
             regex: str = regular_definition[-1]
+            if regex[0] == "[":
+                regex = convert_regex_syntax(regex)
         except:
             self._log("Algo deu errado ao adicionar a definição regular")
         else:
@@ -49,6 +52,7 @@ class Controller:
         except:
             self._log("Algo deu errado ao processar as definições regulares")
         else:
+            self._view.clear_text(idd="symbol_table")
             if len(automatas) > 1:
                 self._automata: FiniteAutomata = automata_union(automatas)
                 self._automata.determinization()
@@ -60,13 +64,14 @@ class Controller:
         except:
             self._log("Algo deu errado ao processar o código fonte")
         else:
+            self._view.clear_text(idd="symbol_table")
+
             symbol_table = {}
             parser = Parser(self._automata, symbol_table)
             for string in source_code:
                 parser.parse(string)
 
             symbol_table = parser.get_symbol_table()
-            print(symbol_table)
             for lexeme, token in symbol_table.items():
                 self._view.insert_text(idd="symbol_table", text=f"{lexeme}, {token}")
         return None

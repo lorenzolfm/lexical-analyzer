@@ -64,6 +64,10 @@ class View(Tk):
         self._forms[idd].insert_text(idd, text)
         return None
 
+    def clear_text(self, idd: str) -> None:
+        self._forms[idd].clear_text(idd)
+        return None
+
     def log_msg(self, msg: str) -> None:
         self._logger.log(msg)
         return None

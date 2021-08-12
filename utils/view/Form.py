@@ -61,6 +61,13 @@ class Form(ttk.LabelFrame):
         text_entry["state"] = DISABLED
         return None
 
+    def clear_text(self, idd: str) -> None:
+        text_entry = self._text_entries[idd]
+        text_entry["state"] = NORMAL
+        text_entry.delete('1.0', END)
+        text_entry["state"] = DISABLED
+        return None
+
     def add_checkbutton(self, idd: str, label: str = "", row: int = 0, column: int = 0) -> None:
         self._bool_var: BooleanVar = BooleanVar()
         tk_checkbutton: ttk.Checkbutton = ttk.Checkbutton(master=self, text=label, variable=self._bool_var)
