@@ -3,7 +3,9 @@ from typing import Dict, List
 from ..view.View import View
 from ..view.Form import Form
 from ..model.AbstractSyntaxTree import AbstractSyntaxTree
+from ..model.FiniteAutomata import FiniteAutomata
 from ..algorithm import automata_union
+from ..model.Token import Token
 from ..model.Parser import Parser
 
 class Controller:
@@ -27,37 +29,46 @@ class Controller:
 
     def _handle_add_regular_definition_callback(self, response: Dict) -> None:
         try:
-            print("try")
+            regular_definition = list(response["inputs"]["rd_entry"].split())
+            name: str = regular_definition[0]
+            regex: str = regular_definition[-1]
         except:
             self._log("Algo deu errado ao adicionar a definição regular")
         else:
-            print("finally")
-        # try:
-            # regular_definition = list(response["inputs"]["rd_entry"].split())
-            # name = regular_definition[0]
-            # regex = regular_definition[-1]
-        # except:
-            # print("Algo deu errado")
-        # else:
-            # self._regular_definitions[name] = regex
+            self._regular_definitions[name] = regex
+            self._view.insert_text(idd="regular_definition_output", text="".join(regular_definition))
         return None
 
     def _handle_done_reg_def_input_callback(self, response: Dict) -> None:
         try:
-            print("try")
+            automatas = []
+            for name, regex in self._regular_definitions.items():
+                token = Token(name)
+                tree = AbstractSyntaxTree(regex, token)
+                automatas.append(tree.get_finite_automata())
         except:
             self._log("Algo deu errado ao processar as definições regulares")
         else:
-            print("finally")
+            if len(automatas) > 1:
+                self._automata: FiniteAutomata = automata_union(automatas)
+                self._automata.determinization()
         return None
 
     def _handle_source_code_input(self, response: Dict) -> None:
         try:
-            print("try")
+            source_code = list(response["text_entries"]["source_code_input"].split())
         except:
             self._log("Algo deu errado ao processar o código fonte")
         else:
-            print("finally")
+            symbol_table = {}
+            parser = Parser(self._automata, symbol_table)
+            for string in source_code:
+                parser.parse(string)
+
+            symbol_table = parser.get_symbol_table()
+            print(symbol_table)
+            for lexeme, token in symbol_table.items():
+                self._view.insert_text(idd="symbol_table", text=f"{lexeme}, {token}")
         return None
 
     def _log(self, msg: str) -> None:

@@ -1,4 +1,4 @@
-from tkinter import Tk
+from tkinter import Tk, DISABLED
 from typing import Dict
 
 from .Container import Container
@@ -49,13 +49,19 @@ class View(Tk):
     def _create_regex_output_form(self, parent: Container) -> None:
         idd: str = "regular_definition_output"
         new_form: Form = Form(parent=parent, label="Regular Definitions")
-        new_form.add_text_entry(idd=idd, height=4, width=50)
+        new_form.add_text_entry(idd=idd, height=4, width=50, state=DISABLED)
+        self._forms[idd] = new_form
         return None
 
     def _create_symbol_table(self, parent: Container) -> None:
         idd: str = "symbol_table"
         new_form: Form = Form(parent=parent, label="Symbol Table", row=1)
-        new_form.add_text_entry(idd=idd, width=50)
+        new_form.add_text_entry(idd=idd, width=50, state=DISABLED)
+        self._forms[idd] = new_form
+        return None
+
+    def insert_text(self, idd: str, text: str) -> None:
+        self._forms[idd].insert_text(idd, text)
         return None
 
     def log_msg(self, msg: str) -> None:
