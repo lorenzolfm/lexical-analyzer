@@ -8,6 +8,7 @@ class Parser:
     def __init__(self, automata: FiniteAutomata, symbol_table: Dict[str, Token]) -> None:
         self._automata = automata
         self._symbol_table = symbol_table
+        self._found_tokens: Dict[str, Token] = {}
 
     def get_symbol_table(self) -> Dict:
         return self._symbol_table
@@ -30,6 +31,7 @@ class Parser:
                     last_token = token
                 elif last_token:
                     self._symbol_table[last_lexeme] = last_token
+                    self._found_tokens[last_lexeme] = last_token
                     begin_ptr = end_lexeme - 1
                     end_lexeme -= 1
                     last_token = None
@@ -44,6 +46,7 @@ class Parser:
 
             if end_lexeme > size_of_string and last_token:
                 self._symbol_table[last_lexeme] = last_token
+                self._found_tokens[last_lexeme] = last_token
                 begin_ptr = end_lexeme
                 last_token = None
                 last_lexeme = ""

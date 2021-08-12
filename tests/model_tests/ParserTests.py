@@ -57,7 +57,7 @@ class ParserTests(unittest.TestCase):
         for string in input_list:
             parser.parse(string)
 
-        for key, value in parser._symbol_table.items():
+        for key, value in parser._found_tokens.items():
             print(f"{key} {value}")
 
         return None
