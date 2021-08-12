@@ -69,9 +69,10 @@ class Controller:
             self._log("Algo deu errado ao processar as definições regulares")
         else:
             # self._view.clear_text(idd="symbol_table")
-            if len(automatas) > 1:
+            if len(automatas) > 1:  # FIXME: precisa mesmo?
                 self._automata: FiniteAutomata = automata_union(automatas)
                 self._automata.determinization()
+                self._log("Árvores e autômatos gerados com sucesso.")
         return None
 
     def _handle_source_code_input(self, response: Dict) -> None:
@@ -120,8 +121,9 @@ class Controller:
         except:
             self._log("Algo deu errado ao exportar.")
         else:
-            file = open("tokens.txt", "w")
+            file = open("docs/tokens.txt", "w")
             file.write(tokens)
+            self._log("Exportado com sucesso. Verifique o diretório docs.")
             return None
 
     def _log(self, msg: str) -> None:
