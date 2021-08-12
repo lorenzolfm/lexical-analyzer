@@ -33,7 +33,7 @@ class ParserTests(unittest.TestCase):
         regex_idd = convert_regex_syntax(regex_idd)
         regex_idd += "*"
 
-        dig =  Token("DIGITO")
+        dig = Token("DIGITO")
         regex_dig = "[0-9]"
         regex_dig = convert_regex_syntax(regex_dig)
         regex_dig += "*"
@@ -53,5 +53,8 @@ class ParserTests(unittest.TestCase):
         for string in input_list:
             parser.parse(string)
 
-        print(parser._symbol_table)
+        # print(parser._symbol_table)
+        for key, value in parser._symbol_table.items():
+            print(f"{key} {value}")
+
         return None

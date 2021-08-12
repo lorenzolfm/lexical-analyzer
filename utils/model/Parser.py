@@ -28,13 +28,17 @@ class Parser:
                     last_token = token
                 elif last_token:
                     self._symbol_table[last_lexeme] = last_token
-                    begin_ptr = end_lexeme
+                    begin_ptr = end_lexeme - 1
+                    end_lexeme -= 1
                     last_token = None
                     last_lexeme = ""
+            else:
+                last_lexeme = lexeme
+                last_token = self._symbol_table[lexeme]
 
             end_lexeme += 1
 
-            if end_lexeme >= size_of_string and last_token:
+            if end_lexeme > size_of_string and last_token:
                 self._symbol_table[last_lexeme] = last_token
                 begin_ptr = end_lexeme
                 last_token = None
