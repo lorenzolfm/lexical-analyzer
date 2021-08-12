@@ -34,7 +34,12 @@ class Controller:
             name: str = regular_definition[0]
             regex: str = regular_definition[-1]
             if regex[0] == "[":
-                regex = convert_regex_syntax(regex)
+                string = "["
+                i = 1
+                while(string[-1] != "]"):
+                    string += regex[i]
+                    i += 1
+                regex = convert_regex_syntax(string) + regex[i:]
         except:
             self._log("Algo deu errado ao adicionar a definição regular")
         else:
