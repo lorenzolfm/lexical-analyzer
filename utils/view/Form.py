@@ -7,7 +7,9 @@ class Form(ttk.LabelFrame):
         parent: Union[Tk, Toplevel, ttk.LabelFrame],
         label: str = "",
         row: int = 0,
-        column: int = 0
+        column: int = 0,
+        rowspan: int = 1,
+        columnspan: int = 1
     ) -> None:
         super().__init__(
             master=parent,
@@ -16,7 +18,7 @@ class Form(ttk.LabelFrame):
             relief="groove",
             padding=5
         )
-        self.grid(row=row, column=column, sticky="nwse")
+        self.grid(row=row, column=column, sticky="nwse", rowspan=rowspan, columnspan=columnspan)
         self._init_attributes()
 
     def _init_attributes(self) -> None:
