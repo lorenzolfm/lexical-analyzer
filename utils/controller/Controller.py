@@ -1,3 +1,5 @@
+# TODO: Entrada de Palavras Reservadas
+# TODO: Gerar arquivo de saída com os tokens encontrados
 from typing import Dict, List
 
 from ..view.View import View
