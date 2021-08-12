@@ -9,12 +9,14 @@ class Parser:
         self._automata = automata
         self._symbol_table = symbol_table
 
+    def get_symbol_table(self) -> Dict:
+        return self._symbol_table
+
     def parse(self, string: str) -> None:
         begin_ptr: int = 0
         end_lexeme: int = 1
 
         size_of_string: int = len(string)
-        greater_size: int = 0
 
         last_lexeme = ""
         last_token = None
