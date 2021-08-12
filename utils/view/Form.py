@@ -1,5 +1,5 @@
 from typing import Dict, Union, Callable
-from tkinter import ttk, Tk, Toplevel, StringVar, BooleanVar, Listbox, SINGLE, END, Text, FIRST
+from tkinter import ttk, Tk, Toplevel, StringVar, BooleanVar, Listbox, SINGLE, END, Text, FIRST, NORMAL, DISABLED
 
 class Form(ttk.LabelFrame):
     def __init__(
@@ -48,10 +48,17 @@ class Form(ttk.LabelFrame):
         self._buttons[idd] = tk_button
         return None
 
-    def add_text_entry(self, idd: str, height: int = 20, width: int = 20, bg = "#ffffff", row: int = 0, column: int = 0) -> None:
-        tk_text: Text = Text(master=self, height=height, width=width, bg=bg)
+    def add_text_entry(self, idd: str, height: int = 20, width: int = 20, bg = "#ffffff", row: int = 0, column: int = 0, state=NORMAL) -> None:
+        tk_text: Text = Text(master=self, height=height, width=width, bg=bg, state=state)
         tk_text.grid(row=row, column=column)
         self._text_entries[idd] = tk_text
+        return None
+
+    def insert_text(self, idd: str, text: str) -> None:
+        text_entry = self._text_entries[idd]
+        text_entry["state"] = NORMAL
+        text_entry.insert('1.0', text+"\n")
+        text_entry["state"] = DISABLED
         return None
 
     def add_checkbutton(self, idd: str, label: str = "", row: int = 0, column: int = 0) -> None:

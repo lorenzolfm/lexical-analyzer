@@ -10,16 +10,16 @@ from utils.algorithm import automata_union
 
 class ParserTests(unittest.TestCase):
     def test_parser(self) -> None:
-        symbol_table = {
-            "if": Token("if"),
-            "else": Token("else"),
-            "(": Token("AbreP"),
-            ")": Token("FechaP"),
-            ":": Token("2pontos"),
-            "return": Token("Retorno"),
-            "=": Token("Igual"),
-            "+": Token("Mais")
-        }
+        # symbol_table = {
+            # "if": Token("if"),
+            # "else": Token("else"),
+            # "(": Token("AbreP"),
+            # ")": Token("FechaP"),
+            # ":": Token("2pontos"),
+            # "return": Token("Retorno"),
+            # "=": Token("Igual"),
+            # "+": Token("Mais")
+        # }
 
         # string = """
         #     if(ifood):
@@ -27,34 +27,36 @@ class ParserTests(unittest.TestCase):
         #     else:
         #         return 666
         # """
-        string = "uma frase grande pra ver se reconhece."
+        string = "uma frase grande pra ver ab reonhee."
 
-        idd = Token("ID")
-        regex_idd = "[a-zA-Z]"
-        regex_idd = convert_regex_syntax(regex_idd)
-        regex_idd += "*"
+        idd = Token("L")
+        regex_idd = "ab"
+        c = Token("C")
+        regex = "c"
 
-        dig = Token("DIGITO")
-        regex_dig = "[0-9]"
-        regex_dig = convert_regex_syntax(regex_dig)
-        regex_dig += "*"
+        # regex_idd = convert_regex_syntax(regex_idd)
+        # regex_idd += "*"
+
+        # dig = Token("DIGITO")
+        # regex_dig = "[0-9]"
+        # regex_dig = convert_regex_syntax(regex_dig)
+        # regex_dig += "*"
 
         input_list = list(string.split())
 
         tree_idd = AbstractSyntaxTree(regex_idd, idd)
-        tree_dig = AbstractSyntaxTree(regex_dig, dig)
+        tree_dig = AbstractSyntaxTree(regex, c)
         automatas = [
             tree_idd.get_finite_automata(),
             tree_dig.get_finite_automata()
         ]
         fa = automata_union(automatas)
         fa.determinization()
-        parser = Parser(fa, symbol_table)
+        parser = Parser(fa, {})
 
         for string in input_list:
             parser.parse(string)
 
-        # print(parser._symbol_table)
         for key, value in parser._symbol_table.items():
             print(f"{key} {value}")
 
