@@ -5,21 +5,22 @@ from .Container import Container
 from .Form import Form
 from .Logger import Logger
 
+
 class View(Tk):
     def __init__(self) -> None:
         super().__init__()
         self.title("Lex")
         self._forms: Dict[str, Form] = {}
         self._create_widgets()
-        return None
 
     def get_form_by_id(self, idd: str) -> Form:
         return self._forms[idd]
 
     def _create_widgets(self) -> None:
-        menu: Container = Container(parent=self, label="Menu")
+        menu: Container = Container(parent=self, label="Menu", rowspan=2)
         self._create_project_form(menu)
         self._create_execution_form(menu)
+        self._create_keyword_form(menu)
 
         view: Container = Container(parent=self, label="View", column=1)
         self._create_regex_output_form(view)
@@ -40,8 +41,8 @@ class View(Tk):
 
     def _create_execution_form(self, parent: Container) -> None:
         idd: str = "source_code_input"
-        new_form: Form = Form(parent=parent, label="Source Code Input", row=1)
-        new_form.add_text_entry(idd=idd)
+        new_form: Form = Form(parent=parent, label="Source Code Input", row=2)
+        new_form.add_text_entry(idd=idd, height=13)
         new_form.add_button(idd=idd, label="Enter Source Code", row=1)
         self._forms[idd] = new_form
         return None
@@ -59,6 +60,13 @@ class View(Tk):
         new_form.add_text_entry(idd=idd, width=50, state=DISABLED)
         self._forms[idd] = new_form
         return None
+
+    def _create_keyword_form(self, parent: Container) -> None:
+        idd: str = "keywords"
+        new_form: Form = Form(parent=parent, label="Keywords Input", row=1)
+        new_form.add_text_entry(idd=idd, height=6)
+        new_form.add_button(idd=idd, label="Enter Keywords", row=1)
+        self._forms[idd] = new_form
 
     def insert_text(self, idd: str, text: str) -> None:
         self._forms[idd].insert_text(idd, text)

@@ -1,13 +1,15 @@
 from tkinter import ttk, Tk
 
+
 class Container(ttk.LabelFrame):
     def __init__(
-        self,
-        parent: Tk,
-        label: str = "",
-        row: int = 0,
-        column: int = 0
-    ) -> None:
+                self,
+                parent: Tk,
+                label: str = "",
+                row: int = 0,
+                column: int = 0,
+                rowspan: int = 1
+                ) -> None:
         super().__init__(
             master=parent,
             text=label,
@@ -15,9 +17,8 @@ class Container(ttk.LabelFrame):
             relief="groove",
             padding=5
         )
-        self.grid(row=row, column=column, sticky="nwse")
+        self.grid(row=row, rowspan=rowspan, column=column, sticky="nwse")
         self._make_responsive(parent)
-        return None
 
     @staticmethod
     def _make_responsive(parent) -> None:

@@ -1,6 +1,6 @@
 # TODO: Entrada de Palavras Reservadas
 # TODO: Gerar arquivo de saída com os tokens encontrados
-from typing import Dict, List
+from typing import Dict
 
 from ..view.View import View
 from ..view.Form import Form
@@ -11,12 +11,12 @@ from ..algorithm import automata_union
 from ..model.Token import Token
 from ..model.Parser import Parser
 
+
 class Controller:
     def __init__(self) -> None:
         self._view = View()
         self._bind_callbacks()
         self._regular_definitions = {}
-        return None
 
     def run(self) -> None:
         self._view.mainloop()
@@ -38,7 +38,7 @@ class Controller:
             if regex[0] == "[":
                 string = "["
                 i = 1
-                while(string[-1] != "]"):
+                while (string[-1] != "]"):
                     string += regex[i]
                     i += 1
                 regex = convert_regex_syntax(string) + regex[i:]
