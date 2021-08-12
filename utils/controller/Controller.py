@@ -17,6 +17,7 @@ class Controller:
         self._view = View()
         self._bind_callbacks()
         self._regular_definitions = {}
+        self._symbol_table: Dict[str, Token] = {}
 
     def run(self) -> None:
         self._view.mainloop()
@@ -77,8 +78,8 @@ class Controller:
         else:
             self._view.clear_text(idd="symbol_table")
 
-            symbol_table = {}
-            parser = Parser(self._automata, symbol_table)
+            # symbol_table = {}
+            parser = Parser(self._automata, self._symbol_table)
             for string in source_code:
                 parser.parse(string)
 
@@ -93,9 +94,8 @@ class Controller:
         except:
             self._log("Algo deu errado ao processar as palavras-chave.")
         else:
-            symbol_table: Dict[str, Token] = {}
             for word in keywords:
-                symbol_table[word] = Token(name=word)
+                self._symbol_table[word] = Token(name=word)
 
     def _log(self, msg: str) -> None:
         self._view.log_msg(msg)
