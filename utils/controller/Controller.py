@@ -1,4 +1,3 @@
-# TODO: Entrada de Palavras Reservadas
 # TODO: Gerar arquivo de saída com os tokens encontrados
 from typing import Dict
 
@@ -78,7 +77,6 @@ class Controller:
         else:
             self._view.clear_text(idd="symbol_table")
 
-            # symbol_table = {}
             parser = Parser(self._automata, self._symbol_table)
             for string in source_code:
                 parser.parse(string)
@@ -96,6 +94,8 @@ class Controller:
         else:
             for word in keywords:
                 self._symbol_table[word] = Token(name=word)
+
+        return None
 
     def _log(self, msg: str) -> None:
         self._view.log_msg(msg)
