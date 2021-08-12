@@ -28,6 +28,10 @@ class Controller:
 
         source_code_input: Form = self._view.get_form_by_id("source_code_input")
         source_code_input.add_btn_callback(btn_id="source_code_input", callback=self._handle_source_code_input)
+
+        keywords_input: Form = self._view.get_form_by_id("keywords")
+        keywords_input.add_btn_callback(btn_id="keywords", callback=self._handle_keyword_input_callback)
+
         return None
 
     def _handle_add_regular_definition_callback(self, response: Dict) -> None:
@@ -82,6 +86,16 @@ class Controller:
             for lexeme, token in symbol_table.items():
                 self._view.insert_text(idd="symbol_table", text=f"{lexeme}, {token}")
         return None
+
+    def _handle_keyword_input_callback(self, response: Dict) -> None:
+        try:
+            keywords = list(response["text_entries"]["keywords"].split())
+        except:
+            self._log("Algo deu errado ao processar as palavras-chave.")
+        else:
+            symbol_table: Dict[str, Token] = {}
+            for word in keywords:
+                symbol_table[word] = Token(name=word)
 
     def _log(self, msg: str) -> None:
         self._view.log_msg(msg)
