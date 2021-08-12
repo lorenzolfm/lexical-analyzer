@@ -13,6 +13,9 @@ class Parser:
     def get_symbol_table(self) -> Dict:
         return self._symbol_table
 
+    def get_found_tokens(self) -> Dict[str, Token]:
+        return self._found_tokens
+
     def parse(self, string: str) -> None:
         begin_ptr: int = 0
         end_lexeme: int = 1
