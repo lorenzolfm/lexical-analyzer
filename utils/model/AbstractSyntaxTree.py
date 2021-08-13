@@ -14,10 +14,24 @@ state_id: int = 65
 
 class AbstractSyntaxTree:
     def __init__(self, regex: str, token: Optional[Token] = None) -> None:
+        """
+
+        Args:
+            regex: regular expression string.
+            token: token of regex.
+        """
         self._create_syntax_tree_from_regex(regex)
         self._set_token_for_final_states(token)
 
     def _create_syntax_tree_from_regex(self, regex: str) -> None:
+        """
+
+        Args:
+            regex: regular expression string.
+
+        Returns:
+
+        """
         postfix_regex = setup_regex(regex)
         symbols: Set[str] = set()
         leaf_nodes: Dict[int, Node] = {}
@@ -46,6 +60,15 @@ class AbstractSyntaxTree:
         return None
 
     def _create_finite_automata(self, leaf_nodes: Dict[int, Node], symbols: Set[str]) -> None:
+        """
+
+        Args:
+            leaf_nodes: dictionary of leaf nodes in the tree.
+            symbols: all symbols in the tree. Except operands.
+
+        Returns:
+
+        """
         # Method setup
         global state_id
         final_state_flag: int = max(list(leaf_nodes.keys()))
@@ -104,7 +127,15 @@ class AbstractSyntaxTree:
 
         return None
 
-    def _set_token_for_final_states(self, token) -> None:
+    def _set_token_for_final_states(self, token: Token) -> None:
+        """
+
+        Args:
+            token: token of regex.
+
+        Returns:
+
+        """
         for state in self._finite_automata.get_final_states():
             state.set_token(token)
         return None
@@ -115,7 +146,13 @@ class AbstractSyntaxTree:
     def get_root(self):
         return self._root
 
-    def in_order(self):
+    def in_order(self) -> List[Node]:
+        """
+
+        Returns:
+            A in order list of nodes.
+
+        """
         array: List[Node] = []
         if not self.empty():
             self._root.in_order(array)
@@ -127,22 +164,6 @@ class AbstractSyntaxTree:
 
     def empty(self) -> bool:
         return self._size == 0
-
-    def contains(self, value) -> bool:
-        if self.empty():
-            return False
-        else:
-            aux: Node = self._root
-
-            while (aux is not None):
-                if (aux.get_value() == value):
-                    return True
-                elif (aux.get_value() < value):
-                    aux = aux.get_right_child()
-                else:
-                    aux = aux.get_left_child()
-
-            return False
 
     def __repr__(self) -> str:
         return str(self.in_order())
