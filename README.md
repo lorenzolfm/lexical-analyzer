@@ -1,6 +1,20 @@
 # Geradores de Analisadores Léxicos e Sintáticos
 
 ---
+## Requisitos
+
+Python 3.8 ou superior e tkinter.
+
+---
+
+## Execução
+
+Na raíz do projeto.
+```python3 main.py```
+
+---
+
+
 ## Objetivo
 
 ---
