@@ -36,6 +36,15 @@ class FiniteAutomata:
         return self._final_states
 
     def eval_lexeme(self, lexeme: str) -> Optional[Token]:
+        """
+
+        Args:
+            lexeme:
+
+        Returns:
+            A token if lexeme is accepted by the automaton, else None.
+
+        """
         actual_state = self._initial_state
         for char in lexeme:
             transition = self._get_transition(actual_state, char)
@@ -49,6 +58,12 @@ class FiniteAutomata:
         return None
 
     def _set_new_states(self, list_of_new_transitions: List[Tuple]) -> None:
+        """
+        Set attributes of class.
+
+        Args:
+            list_of_new_transitions:
+        """
         self._states = set()
         self._transitions = set()
         new_final_states: Set[State] = set()
@@ -127,6 +142,15 @@ class FiniteAutomata:
         return new_transitions
 
     def _is_new_final_state(self, set_of_old_states: Set[State]) -> bool:
+        """
+        Check if the new state is a final state.
+
+        Args:
+            set_of_old_states:
+
+        Returns:
+
+        """
         for state in set_of_old_states:
             if state in self._final_states:
                 return True
@@ -134,6 +158,12 @@ class FiniteAutomata:
         return False
 
     def _get_e_closure(self) -> Dict[State, Set[State]]:
+        """
+
+        Returns:
+            Dictionary of epsilon closure.
+
+        """
         e_closure: Dict[State, Set[State]] = {state: {state} for state in self._states}
 
         for state, values in e_closure.items():
