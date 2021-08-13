@@ -26,10 +26,12 @@ class View(Tk):
         self._create_regex_output_form(view)
         self._create_symbol_table(view)
         self._create_tokens_found_form(view)
+        self._create_lexical_table(view)
 
         logs: Container = Container(parent=self, label="Logger", row=1, column=1)
         self._logger = Logger(logs)
         return None
+
 
     def _create_project_form(self, parent: Container) -> None:
         idd: str = "regular_definition_input"
@@ -50,7 +52,7 @@ class View(Tk):
 
     def _create_regex_output_form(self, parent: Container) -> None:
         idd: str = "regular_definition_output"
-        new_form: Form = Form(parent=parent, label="Regular Definitions", columnspan=2)
+        new_form: Form = Form(parent=parent, label="Regular Definitions", columnspan=3)
         new_form.add_text_entry(idd=idd, height=4, width=50, state=DISABLED)
         self._forms[idd] = new_form
         return None
@@ -74,6 +76,13 @@ class View(Tk):
         idd: str = "tokens_found"
         new_form: Form = Form(parent=parent, label="Tokens Found in Code", row=1, column=1)
         new_form.add_button(idd=idd, label="Export", row=2)
+        new_form.add_text_entry(idd=idd, state=DISABLED)
+        self._forms[idd] = new_form
+        return None
+
+    def _create_lexical_table(self, parent: Container) -> None:
+        idd: str = "lexical_table"
+        new_form: Form = Form(parent=parent, label="Lexical Table", row=1, column=2)
         new_form.add_text_entry(idd=idd, state=DISABLED)
         self._forms[idd] = new_form
         return None

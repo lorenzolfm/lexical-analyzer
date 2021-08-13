@@ -68,8 +68,10 @@ class Controller:
             self._log("Algo deu errado ao processar as definições regulares")
         else:
             # self._view.clear_text(idd="symbol_table")
+            self._view.clear_text(idd="lexical_table")
             self._automata: FiniteAutomata = automata_union(automatas)
             self._automata.determinization()
+            self._view.insert_text(idd="lexical_table", text=str(self._automata))
             self._log("Árvores e autômatos gerados com sucesso.")
         return None
 
