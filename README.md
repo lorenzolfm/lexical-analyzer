@@ -14,6 +14,22 @@ Na raíz do projeto.
 
 ---
 
+## Instruções de Uso
+
+* O usuário deve entrar com definições regulares na janela "Regular Definition Input"
+* O formato de uma definição regular é `NOME : REGEX`.
+* Para adicionar a definição regular, clique em "Add Regex".
+* Ao terminar de entrar com as definições regulares clique em "Done". Ao clicar nesse botão, serão geradas todas as árvores sintáticas, em seguida seus respectivos autômatos. Esses autômatos serão unidos e determinizados para possibilitar o parsing.
+
+* Em seguida, você pode entrar com as palavras reservadas na janela "Keywords Input".
+* As palavras reservadas devem ser digitadas com espaços separando-as. Exemplo `if else return`
+* Ao terminar, aperte em "Enter Keywords". Ao pressionar esse botão, a tabela de símbolos será atualizada com as palavras reservadas.
+
+* Finalmente, você pode usar a janela "Source Code Input" para digitar o texto que deseja analisar.
+* Clique em "Enter Source Code" para fazer a análise.
+
+---
+
 
 ## Objetivo
 
