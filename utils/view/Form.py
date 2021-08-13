@@ -1,5 +1,5 @@
 from typing import Dict, Union, Callable
-from tkinter import ttk, Tk, Toplevel, StringVar, BooleanVar, Listbox, SINGLE, END, Text, NORMAL, DISABLED
+from tkinter import ttk, Tk, Toplevel, StringVar, BooleanVar, Listbox, SINGLE, END, Text, NORMAL, DISABLED, Scrollbar
 
 
 class Form(ttk.LabelFrame):
@@ -65,9 +65,16 @@ class Form(ttk.LabelFrame):
                        bg: str = "#ffffff",
                        row: int = 0,
                        column: int = 0,
-                       state=NORMAL
+                       state = NORMAL,
+                       wrap: bool = True
                        ) -> None:
-        tk_text: Text = Text(master=self, height=height, width=width, bg=bg, state=state)
+        if not(wrap):
+            tk_text: Text = Text(master=self, height=height, width=width, bg=bg, state=state, wrap="none")
+            scrollbar = Scrollbar(master=self, orient="horizontal", command=tk_text.xview)
+            scrollbar.grid(row=2, column=0, columnspan=100)
+            tk_text.config(xscrollcommand=scrollbar.set)
+        else:
+            tk_text: Text = Text(master=self, height=height, width=width, bg=bg, state=state)
         tk_text.grid(row=row, column=column)
         self._text_entries[idd] = tk_text
         return None

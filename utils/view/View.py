@@ -83,7 +83,7 @@ class View(Tk):
     def _create_lexical_table(self, parent: Container) -> None:
         idd: str = "lexical_table"
         new_form: Form = Form(parent=parent, label="Lexical Table", row=1, column=2)
-        new_form.add_text_entry(idd=idd, state=DISABLED)
+        new_form.add_text_entry(idd=idd, state=DISABLED, wrap=False)
         self._forms[idd] = new_form
         return None
 
