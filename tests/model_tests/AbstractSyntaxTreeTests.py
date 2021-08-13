@@ -12,7 +12,7 @@ class AbstractSyntaxTreeTests(unittest.TestCase):
         self.assertEqual(actual, expected)
 
         tree = AbstractSyntaxTree("abc(a|b)?abc(c|d)abc")
-        expected = ['a', '.', 'b', '.', 'c', '.', 'a', '|', 'b', '?', '.', 'a',
+        expected = ['a', '.', 'b', '.', 'c', '.', 'a', '|', 'b', '|', '&','.', 'a',
                     '.', 'b', '.', 'c', '.', 'c', '|', 'd', '.', 'a', '.', 'b', '.', 'c', '.', '#']
         actual = tree.in_order()
         self.assertEqual(actual, expected)
