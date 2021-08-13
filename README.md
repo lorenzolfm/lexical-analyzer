@@ -1,5 +1,8 @@
 # Geradores de Analisadores Léxicos e Sintáticos
 
+Lorenzo Maturano 19100535
+Gabriel Medeiros 19103977
+
 ---
 ## Requisitos
 
