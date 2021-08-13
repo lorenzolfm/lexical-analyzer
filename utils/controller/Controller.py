@@ -68,10 +68,9 @@ class Controller:
             self._log("Algo deu errado ao processar as definições regulares")
         else:
             # self._view.clear_text(idd="symbol_table")
-            if len(automatas) > 1:  # FIXME: precisa mesmo?
-                self._automata: FiniteAutomata = automata_union(automatas)
-                self._automata.determinization()
-                self._log("Árvores e autômatos gerados com sucesso.")
+            self._automata: FiniteAutomata = automata_union(automatas)
+            self._automata.determinization()
+            self._log("Árvores e autômatos gerados com sucesso.")
         return None
 
     def _handle_source_code_input(self, response: Dict) -> None:
