@@ -134,6 +134,12 @@ class Node:
         return None
 
     def is_leaf(self) -> bool:
+        """
+
+        Returns:
+            True if node is a leaf, else False.
+
+        """
         if (self._left_child is None) and (self._right_child is None):
             return True
 
