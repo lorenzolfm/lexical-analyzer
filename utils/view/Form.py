@@ -1,5 +1,6 @@
 from typing import Dict, Union, Callable
-from tkinter import ttk, Tk, Toplevel, StringVar, BooleanVar, Listbox, SINGLE, END, Text, FIRST, NORMAL, DISABLED
+from tkinter import ttk, Tk, Toplevel, StringVar, BooleanVar, Listbox, SINGLE, END, Text, NORMAL, DISABLED
+
 
 class Form(ttk.LabelFrame):
     def __init__(
@@ -44,13 +45,28 @@ class Form(ttk.LabelFrame):
         self._entries[idd] = tk_entry
         return None
 
-    def add_button(self, idd: str, label: str = "", row: int = 0, column: int = 0, rowspan: int = 1, columnspan: int = 1) -> None:
+    def add_button(self,
+                   idd: str,
+                   label: str = "",
+                   row: int = 0,
+                   column: int = 0,
+                   rowspan: int = 1,
+                   columnspan: int = 1
+                   ) -> None:
         tk_button: ttk.Button = ttk.Button(master=self, text=label)
         tk_button.grid(row=row, column=column, rowspan=rowspan, columnspan=columnspan)
         self._buttons[idd] = tk_button
         return None
 
-    def add_text_entry(self, idd: str, height: int = 20, width: int = 20, bg = "#ffffff", row: int = 0, column: int = 0, state=NORMAL) -> None:
+    def add_text_entry(self,
+                       idd: str,
+                       height: int = 20,
+                       width: int = 20,
+                       bg: str = "#ffffff",
+                       row: int = 0,
+                       column: int = 0,
+                       state=NORMAL
+                       ) -> None:
         tk_text: Text = Text(master=self, height=height, width=width, bg=bg, state=state)
         tk_text.grid(row=row, column=column)
         self._text_entries[idd] = tk_text

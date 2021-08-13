@@ -2,6 +2,7 @@ from typing import Optional
 
 from .Token import Token
 
+
 class State:
     def __init__(self, name: str, label: str = "", token: Optional[Token] = None) -> None:
         self._name = name

@@ -1,5 +1,6 @@
 from typing import Optional
 
+
 class Token:
     def __init__(self, name: str, attribute: Optional[str] = None) -> None:
         self._name: str = name
