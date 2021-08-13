@@ -34,9 +34,9 @@ class View(Tk):
     def _create_project_form(self, parent: Container) -> None:
         idd: str = "regular_definition_input"
         new_form: Form = Form(parent=parent, label="Regular Definition Input")
-        new_form.add_entry(idd="rd_entry", label = "New Regex:")
-        new_form.add_button(idd="rd_add", label = "Add Regex", row=1, column=0)
-        new_form.add_button(idd="rd_done", label = "Done", row=1, column=1)
+        new_form.add_entry(idd="rd_entry", label="New Regex:")
+        new_form.add_button(idd="rd_add", label="Add Regex", row=1, column=0)
+        new_form.add_button(idd="rd_done", label="Done", row=1, column=1)
         self._forms[idd] = new_form
         return None
 
