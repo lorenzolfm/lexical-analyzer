@@ -2,7 +2,6 @@ import unittest
 
 from utils.model.Parser import Parser
 from utils.model.AbstractSyntaxTree import AbstractSyntaxTree
-from utils.model.FiniteAutomata import FiniteAutomata
 from utils.model.Token import Token
 from utils.model.regex_utils import convert_regex_syntax
 from utils.algorithm import automata_union
@@ -20,19 +19,16 @@ class ParserTests(unittest.TestCase):
             "=": Token("Igual"),
             "+": Token("Mais")
         }
-        #
+
         string = """
             if(ifood):
                 ifoo = ifod + 10
             else:
                 return 666
         """
-        # string = "uma frase grande pra ver ab reonhee."
 
         idd = Token("ID")
         regex_idd = "[a-zA-Z]"
-        # c = Token("C")
-        # regex = "c"
 
         regex_idd = convert_regex_syntax(regex_idd)
         regex_idd += "*"

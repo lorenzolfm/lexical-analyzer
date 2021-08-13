@@ -1,4 +1,4 @@
-from typing import List, Dict, Set
+from typing import List, Dict, Set, Optional
 
 from .newTypes import closure, optional, operators, epsilon, end_of_sentence
 from .FiniteAutomata import FiniteAutomata
@@ -11,8 +11,9 @@ from .Node import Node
 
 state_id: int = 65
 
+
 class AbstractSyntaxTree:
-    def __init__(self, regex: str, token: Token) -> None:
+    def __init__(self, regex: str, token: Optional[Token] = None) -> None:
         self._create_syntax_tree_from_regex(regex)
         self._set_token_for_final_states(token)
 

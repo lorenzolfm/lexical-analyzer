@@ -7,6 +7,7 @@ from utils.model.FiniteAutomata import FiniteAutomata
 from utils.model.AbstractSyntaxTree import AbstractSyntaxTree
 from utils.algorithm import automata_union
 
+
 class FiniteAutomataTests(unittest.TestCase):
     def test_e_closure(self) -> None:
         a = State("A")
@@ -35,7 +36,6 @@ class FiniteAutomataTests(unittest.TestCase):
             initial_state = initial_state,
             final_states = final_states
         )
-
 
         actual = fa._get_e_closure()
         self.assertEqual(actual[a], {a, b, c})
@@ -80,14 +80,18 @@ class FiniteAutomataTests(unittest.TestCase):
 
         symbols = {'a', 'b', '&'}
         transitions = {
-            Transition(q0, 'a', q1), Transition(q0, '&', q1), Transition(q1, 'a', q2), Transition(q1, 'b', q2), Transition(q1, '&', q2),
+            Transition(q0, 'a', q1),
+            Transition(q0, '&', q1),
+            Transition(q1, 'a', q2),
+            Transition(q1, 'b', q2),
+            Transition(q1, '&', q2),
             Transition(q2, 'b', q3),
             Transition(q3, 'a', q1),
             Transition(q3, 'b', q0),
         }
 
         initial_state = q0
-        final_states= {q2}
+        final_states = {q2}
 
         fa = FiniteAutomata(
             states = {q0,q1,q2,q3},
@@ -163,9 +167,6 @@ class FiniteAutomataTests(unittest.TestCase):
         fa.determinization()
         states = fa.get_states()
 
-        # print(fa)
-        # for state in states:
-            # print(f"Name: {state.get_name()}, Label: {state.get_label()}")
         return None
 
     def test_determinization_again(self) -> None:
